@@ -6,6 +6,8 @@ extends CharacterBody2D
 @onready var detection_area: Area2D = $DetectionArea
 @onready var attack_timer: Timer = $AttackTimer
 @onready var edge_detector: RayCast2D = $EdgeDetector
+@onready var sfx_death: AudioStreamPlayer2D = $SFX_Death
+@onready var sfx_throw: AudioStreamPlayer2D = $SFX_Throw
 
 const BONE_PROJECTILE = preload("res://scenes/bone.tscn") 
 
@@ -63,6 +65,7 @@ func wake_up():
 		return
 		
 	current_state = State.WAKING_UP
+	sfx_death.play()
 	animated_sprite_2d.play("bone_pile_wakeup")
 	
 	await animated_sprite_2d.animation_finished
@@ -124,6 +127,7 @@ func throw_bone():
 	if not player: return
 	is_attacking = true 
 	velocity.x = 0
+	sfx_throw.play()
 	animated_sprite_2d.play("bone_toss")
 	await get_tree().create_timer(0.3).timeout
 	
@@ -185,6 +189,7 @@ func die():
 	collision_shape_2d_bottom.set_deferred("disabled", true)
 	attack_timer.stop()
 	set_physics_process(false)
+	sfx_death.play()
 	animated_sprite_2d.play("crumbling_into_bone_pile")
 	await animated_sprite_2d.animation_finished
 	await get_tree().create_timer(0.8).timeout

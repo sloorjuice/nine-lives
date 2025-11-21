@@ -1,0 +1,243 @@
+[gd_scene load_steps=7 format=3 uid="uid://b6e3jj6sfysoe"]
+
+[ext_resource type="FontFile" uid="uid://baejtw4fvb0a4" path="res://assets/PixelatedEleganceRegular-ovyAA.ttf" id="1_cfell"]
+[ext_resource type="Texture2D" uid="uid://tf2hp0071hbk" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/5/Night/1.png" id="1_i1gb3"]
+[ext_resource type="Texture2D" uid="uid://e7tneuq7luxp" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/5/Night/2.png" id="2_na8tq"]
+[ext_resource type="Texture2D" uid="uid://cwwihdbjntokf" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/5/Night/3.png" id="3_ysrj2"]
+[ext_resource type="Texture2D" uid="uid://11s23qvtler7" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/5/Night/4.png" id="4_51qlj"]
+[ext_resource type="Texture2D" uid="uid://dhtjuuupe4twv" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/5/Night/5.png" id="5_t7a3d"]
+
+[node name="Thanks_For_Playing" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(221, 163)
+texture = ExtResource("1_i1gb3")
+
+[node name="Sprite2D2" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(221, 163)
+texture = ExtResource("2_na8tq")
+
+[node name="Sprite2D3" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(221, 163)
+texture = ExtResource("3_ysrj2")
+
+[node name="Sprite2D4" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(221, 163)
+texture = ExtResource("4_51qlj")
+
+[node name="Sprite2D5" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(221, 163)
+texture = ExtResource("5_t7a3d")
+
+[node name="Thanks" type="Label" parent="CanvasLayer"]
+texture_filter = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -154.0
+offset_top = 14.0
+offset_right = 154.0
+offset_bottom = 37.0
+grow_horizontal = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("1_cfell")
+theme_override_font_sizes/font_size = 22
+text = "Thank you for playing!"
+
+[node name="Thanks2" type="Label" parent="CanvasLayer"]
+texture_filter = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -154.0
+offset_top = 78.0
+offset_right = 154.0
+offset_bottom = 101.0
+grow_horizontal = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("1_cfell")
+theme_override_font_sizes/font_size = 20
+text = "Made By: Sloorjuice"
+horizontal_alignment = 1
+
+[node name="Credits" type="Label" parent="CanvasLayer"]
+texture_filter = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -124.0
+offset_top = 47.0
+offset_right = 124.0
+offset_bottom = 70.0
+grow_horizontal = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("1_cfell")
+theme_override_font_sizes/font_size = 18
+text = "Credits"
+horizontal_alignment = 1
+
+[node name="Credits2" type="Label" parent="CanvasLayer"]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -124.0
+offset_top = -48.0
+offset_right = 124.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("1_cfell")
+theme_override_font_sizes/font_size = 16
+text = "Music"
+horizontal_alignment = 1
+
+[node name="Credits9" type="Label" parent="CanvasLayer"]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -124.0
+offset_top = 6.0
+offset_right = 124.0
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("1_cfell")
+theme_override_font_sizes/font_size = 16
+text = "Art"
+horizontal_alignment = 1
+
+[node name="Credits4" type="Label" parent="CanvasLayer"]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.5
+offset_top = -20.0
+offset_right = 140.5
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("1_cfell")
+theme_override_font_sizes/font_size = 14
+text = "Clement Panchout - Partycles"
+horizontal_alignment = 1
+
+[node name="Credits5" type="Label" parent="CanvasLayer"]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.5
+offset_top = 65.0
+offset_right = 140.5
+offset_bottom = 88.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("1_cfell")
+theme_override_font_sizes/font_size = 14
+text = "Clement Panchout - Partycles"
+horizontal_alignment = 1
+
+[node name="Credits6" type="Label" parent="CanvasLayer"]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -217.0
+offset_top = 89.0
+offset_right = 217.0
+offset_bottom = 112.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("1_cfell")
+theme_override_font_sizes/font_size = 14
+text = "Anokolisa - Free - Adventure Pack - Grassland"
+horizontal_alignment = 1
+
+[node name="Credits7" type="Label" parent="CanvasLayer"]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.5
+offset_top = 112.0
+offset_right = 140.5
+offset_bottom = 135.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("1_cfell")
+theme_override_font_sizes/font_size = 14
+text = "GrafxKid - Sprite Pack 6"
+horizontal_alignment = 1
+
+[node name="Credits8" type="Label" parent="CanvasLayer"]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.5
+offset_top = 134.0
+offset_right = 140.5
+offset_bottom = 157.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("1_cfell")
+theme_override_font_sizes/font_size = 14
+text = "Clement Panchout - Partycles"
+horizontal_alignment = 1
+
+[node name="Credits3" type="Label" parent="CanvasLayer"]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -210.0
+offset_top = 25.0
+offset_right = 210.0
+offset_bottom = 58.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("1_cfell")
+theme_override_font_sizes/font_size = 16
+text = "Free-game-assets - 
+Free Cyberpunk Backgrounds Pixel Art"
+horizontal_alignment = 1

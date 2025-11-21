@@ -1,8 +1,9 @@
-[gd_scene load_steps=64 format=3 uid="uid://detynhaayvji4"]
+[gd_scene load_steps=66 format=3 uid="uid://detynhaayvji4"]
 
 [ext_resource type="Script" uid="uid://b43avo63tqdlu" path="res://skeleton.gd" id="1_d56fl"]
 [ext_resource type="Texture2D" uid="uid://brc8opc3xtur4" path="res://assets/sprites/Sprite Pack 6/3 - Skeleton/Bone_Pile (32 x 32).png" id="1_sh88d"]
 [ext_resource type="Texture2D" uid="uid://bbu1dine2i861" path="res://assets/sprites/Sprite Pack 6/3 - Skeleton/Bone_Pile_Wakeup (32 x 32).png" id="2_d56fl"]
+[ext_resource type="AudioStream" uid="uid://bv8w2c6bwr2nv" path="res://assets/audio/skeleton-throw.wav" id="2_pyp1f"]
 [ext_resource type="Texture2D" uid="uid://cwb05omqt1o01" path="res://assets/sprites/Sprite Pack 6/3 - Skeleton/Bone_Toss (32 x 32).png" id="3_obgqe"]
 [ext_resource type="Texture2D" uid="uid://bu36aqtrg7w71" path="res://assets/sprites/Sprite Pack 6/3 - Skeleton/Crumbling_Into_Bone_Pile (32 x 32).png" id="4_pyp1f"]
 [ext_resource type="Texture2D" uid="uid://jurv108vuyd5" path="res://assets/sprites/Sprite Pack 6/3 - Skeleton/Hurt (32 x 32).png" id="5_4ixog"]
@@ -14,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://bwwkwmnl1drub" path="res://assets/sprites/Sprite Pack 6/3 - Skeleton/Standing (32 x 32).png" id="11_nnwmq"]
 [ext_resource type="Texture2D" uid="uid://cjps2vxmdtot2" path="res://assets/sprites/Sprite Pack 6/3 - Skeleton/Standing_Idle (32 x 32).png" id="12_y4d17"]
 [ext_resource type="Texture2D" uid="uid://bibxukvagqg7k" path="res://assets/sprites/Sprite Pack 6/3 - Skeleton/Twitching_Idle (32 x 32).png" id="13_26xvq"]
+[ext_resource type="AudioStream" uid="uid://ddcibgb8f7t2p" path="res://assets/audio/skeleton-death.mp3" id="15_obgqe"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7wgj3"]
 atlas = ExtResource("2_d56fl")
@@ -424,6 +426,10 @@ collision_layer = 4
 collision_mask = 2
 script = ExtResource("1_d56fl")
 
+[node name="SFX_Throw" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_pyp1f")
+volume_db = -4.831
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_rie6r")
@@ -449,3 +455,7 @@ debug_color = Color(0.60619044, 0.5186164, 0.43381742, 0.41960785)
 [node name="EdgeDetector" type="RayCast2D" parent="."]
 target_position = Vector2(0, 40)
 collision_mask = 2
+
+[node name="SFX_Death" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("15_obgqe")
+volume_db = -5.967
