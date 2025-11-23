@@ -83,13 +83,16 @@ func handle_active_state():
 	if distance_to_player > RETREAT_RANGE:
 		shut_down()
 		return
-	
-	if player.global_position.x < global_position.x:
-		direction = -1
-		animated_sprite_2d.flip_h = true
-	else:
-		direction = 1
-		animated_sprite_2d.flip_h = false
+		
+	# Add a dead zone to prevent flipping when player is directly above/below
+	var horizontal_distance = player.global_position.x - global_position.x
+	if abs(horizontal_distance) > 10:  # Only flip if player is more than 10 pixels away horizontally
+		if horizontal_distance < 0:
+			direction = -1
+			animated_sprite_2d.flip_h = true
+		else:
+			direction = 1
+			animated_sprite_2d.flip_h = false
 	
 	edge_detector.position.x = direction * 12 
 	edge_detector.force_raycast_update()
