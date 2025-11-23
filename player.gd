@@ -626,28 +626,25 @@ func apply_knockback(knockback_velocity: Vector2):
 			velocity.y = min(velocity.y, -100)
 
 func take_damage(amount: int):
-	if invincible or is_dashing or is_rolling:
+	if invincible or is_dying or is_dashing or is_rolling:
 		return
-
 	sfx_hurt.play()
 	Input.start_joy_vibration(0, 0.5, 0.8, 0.3)
-	
 	health -= amount
 	health = max(health, 0)
-
 	health_changed.emit(health, max_health)
-	
 	regen_delay_timer = REGEN_DELAY_TIME
-
 	if health <= 0:
 		start_death()
 		return
-
 	hit_stun_timer = hit_stun_time
 	invincible = true
 	animated_sprite_2d.play("take_damage")
-
 	velocity.x = -facing_direction * 150
+	if not is_on_floor():
+		velocity.y = 200
+	await get_tree().create_timer(invincibility_time).timeout
+	invincible = false
 
 	if not is_on_floor():
 		velocity.y = 200

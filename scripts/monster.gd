@@ -87,6 +87,7 @@ func _physics_process(delta):
 			play_anim("fly") 
 
 	move_and_slide()
+	handle_enemy_collisions()
 
 func handle_active_state(delta):
 	if not player:
@@ -203,6 +204,29 @@ func deal_damage_to_player(target):
 		
 		if current_state == State.RECOIL:
 			finish_attack()
+
+func handle_enemy_collisions():
+	if current_state in [State.HURT, State.RECOIL]:
+		return
+	for i in get_slide_collision_count():
+		var collision: KinematicCollision2D = get_slide_collision(i)
+		var collider = collision.get_collider()
+		if collider.is_in_group("enemies"):
+			bounce_off_enemy(collider)
+
+func bounce_off_enemy(collider):
+	# Direction away from the other monster's center (reliable for circles/approximate shapes)
+	var push_dir = (global_position - collider.global_position).normalized()
+	
+	# Kickback strength (tune: higher = more aggressive bounce)
+	const PUSH_FORCE = 350.0
+	
+	# Apply kickback velocity (acts like an impulse; next frame's move_and_slide uses it)
+	velocity += push_dir * PUSH_FORCE
+	
+	# Optional: Add a brief "hurt" feedback (uncomment if desired)
+	# sfx_hurt.play()
+	# current_state = State.HURT  # Short stun; adjust timer if needed
 
 # --- GETTING HIT LOGIC ---
 
