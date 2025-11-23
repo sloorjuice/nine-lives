@@ -8,10 +8,18 @@ extends CharacterBody2D
 @onready var sfx_dash: AudioStreamPlayer2D = $SFX_Dash
 @onready var sfx_hurt: AudioStreamPlayer2D = $SFX_Hurt
 @onready var sfx_death: AudioStreamPlayer2D = $SFX_Death
+@onready var sfx_meow: AudioStreamPlayer2D = $SFX_Meow
+
+# NEW: Preload your meow sounds
+var meow_sounds = [
+	preload("res://assets/audio/cat_sounds/meow1.mp3"),
+	preload("res://assets/audio/cat_sounds/meow2.mp3"),
+	preload("res://assets/audio/cat_sounds/meow3.mp3")
+]
 
 const SPEED = 240.0
 const JUMP_VELOCITY = -380.0
-const HOP_VELOCITY = -200.0 # New constant for the short hop during directional ground attack
+const HOP_VELOCITY = -200.0
 const GROUND_ACCELERATION = 1200.0
 const AIR_ACCELERATION = 1350.0
 const GROUND_FRICTION = 500.0
@@ -45,15 +53,18 @@ signal health_changed(new_health: float, max_health: int)
 
 # --- INPUT HANDLING ---
 enum InputType { KEYBOARD_MOUSE, CONTROLLER }
-var input_type := InputType.KEYBOARD_MOUSE # Default to KB/M
+var input_type := InputType.KEYBOARD_MOUSE
 
 # NEW: Variables for managing the mouse aim lock
-const MOUSE_AIM_LOCK_DURATION = 0.5 # Time (seconds) to lock facing direction after mouse-aimed attack
+const MOUSE_AIM_LOCK_DURATION = 0.5
 var mouse_aim_lock_timer = 0.0
+
+# NEW: Track previous frame's floor state for landing detection
+var was_on_floor := false
 
 var spawn_point: Node2D
 var is_dying = false
-var is_game_over = false # Prevent multiple game overs
+var is_game_over = false
 
 var can_double_jump = true
 var double_jumping = false
@@ -76,10 +87,8 @@ var _default_hitbox_scale_x := 1.0
 var max_health := 5.0
 var health := 5.0
 
-var regen_rate := 0.2
-# New constant for the 7-second delay
-const REGEN_DELAY_TIME = 7.0
-# New timer variable
+var regen_rate := 2.5
+const REGEN_DELAY_TIME = 5.2
 var regen_delay_timer = 0.0
 
 var invincible := false
@@ -100,36 +109,28 @@ func _ready():
 
 	_default_hitbox_scale_x = abs(hitbox.scale.x)
 	
-	# --- Emit initial lives count ---
 	lives_changed.emit(lives)
+	was_on_floor = is_on_floor()
 
-# Listen for non-physics events to detect input type
 func _input(event: InputEvent) -> void:
 	if event is InputEventJoypadButton or event is InputEventJoypadMotion:
-		# Controller input detected
 		input_type = InputType.CONTROLLER
 	elif event is InputEventKey or event is InputEventMouseButton or event is InputEventMouseMotion:
-		# Keyboard/Mouse input detected
 		input_type = InputType.KEYBOARD_MOUSE
 
 func _physics_process(delta: float) -> void:
+	if Input.is_action_just_pressed("meow"):
+		play_random_meow()
+		
 	if regen_delay_timer > 0.0:
 		regen_delay_timer -= delta
 	
-	# ONLY perform regeneration if the delay timer is finished (<= 0.0)
 	if regen_delay_timer <= 0.0:
-		# 1. Store the health value BEFORE regeneration
 		var old_health = health
-		
-		# 2. Calculate the regenerated health once, ensuring it doesn't exceed max_health
 		health = min(max_health, health + regen_rate * delta)
-		
-		# 3. Check if the health value actually changed
 		if health != old_health:
-			# If it changed, emit the signal to update the UI (Health Bar)
 			health_changed.emit(health, max_health)
 
-	# NEW: Decrement the aim lock timer
 	if mouse_aim_lock_timer > 0.0:
 		mouse_aim_lock_timer -= delta
 
@@ -137,7 +138,6 @@ func _physics_process(delta: float) -> void:
 		hit_stun_timer -= delta
 		return
 	
-	# NEW: Stop all processing if game over
 	if is_game_over:
 		velocity = Vector2.ZERO
 		return
@@ -152,12 +152,20 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		return
 
+	# NEW: Check for directional attack inputs (right stick)
 	if not is_attacking and not is_dashing and not is_rolling and not is_wall_clinging:
-		if Input.is_action_just_pressed("attack"):
+		if Input.is_action_just_pressed("attack_up"):
+			perform_directional_attack(-1.0)  # Up
+		elif Input.is_action_just_pressed("attack_down"):
+			perform_directional_attack(1.0)   # Down
+		elif Input.is_action_just_pressed("attack_left"):
+			perform_directional_attack(0.0, -1)  # Left
+		elif Input.is_action_just_pressed("attack_right"):
+			perform_directional_attack(0.0, 1)   # Right
+		elif Input.is_action_just_pressed("attack"):
 			perform_attack("attack")
 		elif Input.is_action_just_pressed("attack_heavy") and is_on_floor():
 			var vertical_input = Input.get_axis("move_up", "move_down")
-			# Only allow heavy attack if there is no significant vertical input (up/down)
 			if abs(vertical_input) < 0.5:
 				perform_attack("attack_heavy")
 
@@ -185,10 +193,20 @@ func _physics_process(delta: float) -> void:
 		if vertical_input < 0:
 			var space_state = get_world_2d().direct_space_state
 			var wall_normal = get_wall_normal()
-			var check_offset = Vector2(-wall_normal.x * 10, -20)
-			var query = PhysicsRayQueryParameters2D.create(global_position, global_position + check_offset)
-			var result = space_state.intersect_ray(query)
-			if not result:
+			
+			var check_offset_1 = Vector2(-wall_normal.x * 10, -15)
+			var check_offset_2 = Vector2(-wall_normal.x * 15, -25)
+			var check_offset_3 = Vector2(-wall_normal.x * 5, -30)
+			
+			var query_1 = PhysicsRayQueryParameters2D.create(global_position, global_position + check_offset_1)
+			var query_2 = PhysicsRayQueryParameters2D.create(global_position, global_position + check_offset_2)
+			var query_3 = PhysicsRayQueryParameters2D.create(global_position, global_position + check_offset_3)
+			
+			var result_1 = space_state.intersect_ray(query_1)
+			var result_2 = space_state.intersect_ray(query_2)
+			var result_3 = space_state.intersect_ray(query_3)
+			
+			if not result_1 and not result_2 and not result_3:
 				var wall_direction = 1 if animated_sprite_2d.flip_h else -1
 				velocity.x = -wall_direction * 150
 				velocity.y = -200
@@ -207,27 +225,22 @@ func _physics_process(delta: float) -> void:
 		dash_timer -= delta
 		if dash_timer <= 0: is_dashing = false
 	
+	# FIXED: Only vibrate if dash actually starts
 	if Input.is_action_just_pressed("dash") and dash_cooldown_timer <= 0 and not is_dashing and not is_rolling and not is_attacking:
 		sfx_dash.play()
 		Input.start_joy_vibration(0, 0.2, 0.4, 0.1)
 		
-		# --- Calculate Dash Direction based on current input/velocity ---
 		var dash_input_dir := Input.get_axis("move_left", "move_right")
 		var intended_dir := facing_direction 
 
 		if abs(dash_input_dir) > 0.1:
-			# 1. Prioritize directional input
 			intended_dir = 1 if dash_input_dir > 0 else -1
 		elif abs(velocity.x) > 10:
-			# 2. Fallback to current movement direction
 			intended_dir = 1 if velocity.x > 0 else -1
-		# 3. If standing still, use current facing_direction (default)
 
 		dash_direction = intended_dir
-		# Update visual facing direction immediately
 		facing_direction = intended_dir
 		animated_sprite_2d.flip_h = facing_direction < 0
-		# --- END DASH DIRECTION ---
 		
 		is_dashing = true
 		dash_timer = DASH_DURATION
@@ -237,28 +250,23 @@ func _physics_process(delta: float) -> void:
 	if roll_timer > 0:
 		roll_timer -= delta
 		if roll_timer <= 0: is_rolling = false
-			
+	
+	# FIXED: Only vibrate if roll actually starts
 	if Input.is_action_just_pressed("roll") and roll_cooldown_timer <= 0 and not is_rolling and is_on_floor() and not is_attacking:
 		sfx_dash.play()
 		Input.start_joy_vibration(0, 0.2, 0.4, 0.1)
 		
-		# --- Calculate Roll Direction based on current input/velocity ---
 		var roll_input_dir := Input.get_axis("move_left", "move_right")
 		var intended_dir := facing_direction 
 
 		if abs(roll_input_dir) > 0.1:
-			# 1. Prioritize directional input
 			intended_dir = 1 if roll_input_dir > 0 else -1
 		elif abs(velocity.x) > 10:
-			# 2. Fallback to current movement direction
 			intended_dir = 1 if velocity.x > 0 else -1
-		# 3. If standing still, use current facing_direction (default)
 
 		roll_direction = intended_dir
-		# Update visual facing direction immediately
 		facing_direction = intended_dir
 		animated_sprite_2d.flip_h = facing_direction < 0
-		# --- END ROLL DIRECTION ---
 		
 		is_rolling = true
 		roll_timer = ROLL_DURATION
@@ -266,7 +274,6 @@ func _physics_process(delta: float) -> void:
 	
 	if not is_on_floor() and not is_dashing:
 		if is_attacking:
-			# Lock velocity in place during air attack animation
 			velocity.y = 0
 			velocity.x = 0
 		elif is_wall_clinging:
@@ -275,11 +282,13 @@ func _physics_process(delta: float) -> void:
 			velocity += get_gravity() * delta * 0.3
 		else:
 			velocity += get_gravity() * delta
-			
+	
+	# FIXED: Jump vibration only when jump actually happens
 	if Input.is_action_just_pressed("jump") and not is_attacking:
-		Input.start_joy_vibration(0,0.05,0.1,0.05)
 		jump_buffer_timer = JUMP_BUFFER_TIME
 
+	var jump_executed = false  # Track if jump actually happens
+	
 	if jump_buffer_timer > 0 and not is_attacking:
 		if is_on_floor() or coyote_timer > 0:
 			velocity.y = JUMP_VELOCITY
@@ -287,6 +296,7 @@ func _physics_process(delta: float) -> void:
 			jump_buffer_timer = 0
 			is_jumping = true
 			sfx_jump.play()
+			jump_executed = true
 		elif is_wall_sliding or is_wall_clinging:
 			var wall_normal = get_wall_normal()
 			velocity.x = wall_normal.x * WALL_JUMP_VELOCITY.x
@@ -296,6 +306,7 @@ func _physics_process(delta: float) -> void:
 			is_jumping = true
 			is_wall_clinging = false
 			sfx_jump.play()
+			jump_executed = true
 		elif can_double_jump:
 			velocity.y = JUMP_VELOCITY
 			double_jumping = true
@@ -303,6 +314,11 @@ func _physics_process(delta: float) -> void:
 			jump_buffer_timer = 0
 			is_jumping = true
 			sfx_jump.play()
+			jump_executed = true
+	
+	# Only vibrate if jump was actually executed
+	if jump_executed:
+		Input.start_joy_vibration(0, 0.05, 0.1, 0.05)
 	
 	if Input.is_action_just_released("jump"):
 		if velocity.y < 0:
@@ -311,16 +327,12 @@ func _physics_process(delta: float) -> void:
 	if velocity.y >= 0 or is_on_floor():
 		is_jumping = false
 	
-	# Only update facing_direction based on movement input if we are on a controller
-	# OR if the mouse aim lock has expired (allowing movement to change direction)
 	var move_input := Input.get_axis("move_left", "move_right")
-	if input_type == InputType.CONTROLLER or mouse_aim_lock_timer <= 0.0: # UPDATED CONDITION
+	if input_type == InputType.CONTROLLER or mouse_aim_lock_timer <= 0.0:
 		if move_input > 0.1:
 			facing_direction = 1
 		elif move_input < -0.1:
 			facing_direction = -1
-	
-	# When mouse aim lock is active, we prevent movement input from flipping the sprite.
 
 	if is_attacking:
 		velocity.x = 0
@@ -340,44 +352,99 @@ func _physics_process(delta: float) -> void:
 			var friction = GROUND_FRICTION if is_on_floor() else AIR_FRICTION
 			velocity.x = move_toward(velocity.x, 0, friction * delta)
 			
+	# Store velocity before move_and_slide resets it
+	var velocity_before_collision = velocity.y
+	
 	move_and_slide()
+	
+	# NEW: Ground collision vibration (landing detection)
+	# Check if we just landed (wasn't on floor, now on floor) with significant downward velocity
+	if is_on_floor() and not was_on_floor and velocity_before_collision > 100:
+		# Scale vibration intensity based on fall speed (lighter than before)
+		var intensity = clamp(velocity_before_collision / 1200.0, 0.08, 0.25)
+		Input.start_joy_vibration(0, intensity, intensity * 1.1, 0.08)
+	
+	# Update floor state for next frame
+	was_on_floor = is_on_floor()
+	
 	update_animations()
+
+func play_random_meow():
+	if meow_sounds.size() > 0:
+		var random_index = randi() % meow_sounds.size()
+		sfx_meow.stream = meow_sounds[random_index]
+		sfx_meow.play()
+
+# NEW: Simplified directional attack function for right stick inputs
+func perform_directional_attack(vertical_dir: float, horizontal_dir: int = 0):
+	is_attacking = true
+	var attack_rotation = 0.0
+	var desired_dir := facing_direction
+	
+	# For horizontal attacks (left/right), set facing direction
+	if horizontal_dir != 0:
+		desired_dir = horizontal_dir
+		facing_direction = desired_dir
+		animated_sprite_2d.flip_h = facing_direction < 0
+		hitbox.scale.x = _default_hitbox_scale_x * facing_direction
+	else:
+		# For vertical attacks, maintain current facing
+		animated_sprite_2d.flip_h = facing_direction < 0
+		hitbox.scale.x = _default_hitbox_scale_x * facing_direction
+	
+	# Always perform directional attack (with hop if on ground)
+	if is_on_floor():
+		velocity.y = HOP_VELOCITY
+	
+	# Determine rotation based on direction
+	if abs(vertical_dir) > 0.1:
+		# Vertical attack (up or down)
+		if vertical_dir > 0:
+			# Down attack
+			attack_rotation = PI / 2.0
+			if animated_sprite_2d.flip_h:
+				attack_rotation = -PI / 2.0
+		else:
+			# Up attack
+			attack_rotation = -PI / 2.0
+			if animated_sprite_2d.flip_h:
+				attack_rotation = PI / 2.0
+	# else: horizontal attack - no rotation needed
+	
+	rotation = attack_rotation
+	animated_sprite_2d.play("jump_attack")
+	Input.start_joy_vibration(0, 0.2, 0.4, 0.1)
+	sfx_attack.play()
+	
+	await get_tree().create_timer(0.2).timeout
+	
+	if is_attacking:
+		check_hitbox_collision("attack")
 
 func perform_attack(anim_name: String):
 	is_attacking = true
-	var attack_rotation = 0.0 # Default rotation
+	var attack_rotation = 0.0
 	var desired_dir := facing_direction
 	
-	# Variable to hold the vertical input/direction, initialized to 0 (neutral)
 	var vertical_input = 0.0
-	# Vertical distance required for the mouse to trigger an up/down attack, preventing accidental input
 	const MOUSE_VERTICAL_THRESHOLD = 50.0
 
-	# --- 1. Determine Attack Direction (Mouse/KB vs. Controller) ---
 	if input_type == InputType.KEYBOARD_MOUSE:
-		# Calculate direction based on mouse position relative to player
 		var mouse_pos = get_global_mouse_position()
 		var direction_to_mouse = mouse_pos - global_position
 		
-		# Horizontal direction (left/right flip)
 		desired_dir = 1 if direction_to_mouse.x >= 0 else -1
 		
-		# Vertical direction (up/down attack)
 		if direction_to_mouse.y < -MOUSE_VERTICAL_THRESHOLD:
-			# Mouse is significantly above the player (Up attack)
 			vertical_input = -1.0
 		elif direction_to_mouse.y > MOUSE_VERTICAL_THRESHOLD:
-			# Mouse is significantly below the player (Down attack)
 			vertical_input = 1.0
-		# Else: vertical_input remains 0.0 (horizontal attack)
 		
-		# NEW: Activate the aim lock timer
 		mouse_aim_lock_timer = MOUSE_AIM_LOCK_DURATION
 
-	else: # InputType.CONTROLLER
-		# Use controller's directional input for both horizontal (for facing) and vertical (for directional attack)
+	else:
 		var input_dir := Input.get_axis("move_left", "move_right")
-		vertical_input = Input.get_axis("move_up", "move_down") # Get vertical input from controller
+		vertical_input = Input.get_axis("move_up", "move_down")
 
 		if abs(input_dir) > 0.1:
 			desired_dir = 1 if input_dir > 0 else -1
@@ -386,55 +453,43 @@ func perform_attack(anim_name: String):
 				desired_dir = 1
 			elif velocity.x < -10:
 				desired_dir = -1
-			# Fallback to facing_direction if static
 	
-	# --- 2. Apply Determined Direction ---
 	facing_direction = desired_dir
 	animated_sprite_2d.flip_h = facing_direction < 0
 	hitbox.scale.x = _default_hitbox_scale_x * facing_direction
 	
-	# --- 3. Check for Directional Attack (Air or Ground) ---
-	# Now, vertical_input is determined by either mouse position (KB/M) or joystick axis (Controller)
 	var is_directional_attack = not is_on_floor() or (is_on_floor() and abs(vertical_input) > 0.5)
 
 	if is_directional_attack:
-		# 3a. If on ground, perform a small hop
 		if is_on_floor():
 			velocity.y = HOP_VELOCITY
 			
-		# 3b. Determine Rotation based on vertical input
 		if vertical_input > 0.5:
-			# Downward attack (spin/dive)
 			attack_rotation = PI / 2.0
 			if animated_sprite_2d.flip_h:
 				attack_rotation = -PI / 2.0
 		elif vertical_input < -0.5:
-			# Upward attack (aerial spike)
 			attack_rotation = -PI / 2.0
 			if animated_sprite_2d.flip_h:
 				attack_rotation = PI / 2.0
 				
-		# 3c. Apply rotation and play jump attack animation
 		rotation = attack_rotation
-		
 		animated_sprite_2d.play("jump_attack")
 		Input.start_joy_vibration(0, 0.2, 0.4, 0.1)
 		sfx_attack.play()
 		
 	else:
-		# 4. Standard Ground Attack (Horizontal or Heavy)
 		animated_sprite_2d.play(anim_name)
 		
 		if anim_name == "attack_heavy":
-			sfx_attack.play() # First sound
+			sfx_attack.play()
 			Input.start_joy_vibration(0, 0.2, 0.4, 0.1)
 			
-			# Wait a very short time and play again
 			await get_tree().create_timer(0.6).timeout
-			sfx_attack.play() # Second sound
+			sfx_attack.play()
 			Input.start_joy_vibration(0, 0.2, 0.4, 0.1)
 		else:
-			sfx_attack.play() # Single sound for normal attack
+			sfx_attack.play()
 			Input.start_joy_vibration(0, 0.2, 0.4, 0.1)
 
 	await get_tree().create_timer(0.2).timeout
@@ -450,7 +505,6 @@ func check_hitbox_collision(anim_type):
 	var bodies = hitbox.get_overlapping_bodies()
 	for body in bodies:
 		if body.has_method("take_damage") and body != self:
-			# Damage calculation is simplified for directional attacks since they use the base damage type
 			body.take_damage(damage, global_position)
 			print("Hit enemy for ", damage, " damage!")
 
@@ -458,7 +512,6 @@ func start_death():
 	is_dying = true
 	velocity = Vector2.ZERO
 	sfx_death.play()
-	# Strong, sustained rumble for 1.0 seconds
 	Input.start_joy_vibration(0, 1.0, 1.0, 1.0)
 	animated_sprite_2d.play("death")
 	await get_tree().create_timer(death_animation_duration).timeout
@@ -470,32 +523,26 @@ func _on_animation_finished():
 	
 	if is_attacking:
 		is_attacking = false
-		# Reset player rotation after the attack finishes
 		rotation = 0.0
 
 func respawn():
-	# NEW: Prevent multiple game overs
 	if is_game_over:
 		return
 	
-	# --- LIVES LOGIC FIRST ---
 	lives -= 1
 	lives_changed.emit(lives)
 	
 	if lives <= 0:
-		# Game Over - Wait 2 seconds before resetting the scene
 		is_game_over = true
 		velocity = Vector2.ZERO
 		await get_tree().create_timer(2.0).timeout
 		get_tree().reload_current_scene()
 		return
 	
-	# Still have lives left - respawn normally
 	is_dying = false
 	is_attacking = false
 	health = max_health
 	health_changed.emit(health, max_health)
-	# Reset rotation on respawn for safety
 	rotation = 0.0
 	if spawn_point:
 		global_position = spawn_point.global_position
@@ -513,8 +560,8 @@ func respawn():
 		roll_cooldown_timer = 0.0
 		coyote_timer = 0.0
 		jump_buffer_timer = 0.0
-		# Reset the aim lock timer on respawn
 		mouse_aim_lock_timer = 0.0
+		was_on_floor = true
 
 func update_animations():
 	if not is_dashing and not is_rolling and not is_attacking:
@@ -528,20 +575,16 @@ func update_animations():
 		elif is_wall_sliding:
 			var wall_normal = get_wall_normal()
 			animated_sprite_2d.flip_h = wall_normal.x < 0
-		# Only allow movement velocity to flip the sprite if the mouse aim lock has expired
-		elif input_type == InputType.CONTROLLER or mouse_aim_lock_timer <= 0.0: # UPDATED CONDITION
+		elif input_type == InputType.CONTROLLER or mouse_aim_lock_timer <= 0.0:
 			if velocity.x > 0:
 				animated_sprite_2d.flip_h = false
 			elif velocity.x < 0:
 				animated_sprite_2d.flip_h = true
-		# Otherwise (Mouse aim lock is active), let the sprite direction be maintained by attack logic
-		# based on the last mouse position.
 
 	if is_attacking:
 		return
 
 	if not is_attacking:
-		# Keep hitbox aligned with character facing direction when not attacking/rotating
 		hitbox.scale.x = _default_hitbox_scale_x * (-1 if animated_sprite_2d.flip_h else 1)
 
 	if is_dashing:
@@ -571,13 +614,22 @@ func update_animations():
 		else:
 			animated_sprite_2d.play("run")
 
+func apply_knockback(knockback_velocity: Vector2):
+	"""Apply knockback force to the player"""
+	if is_dashing or is_rolling:
+		# Reduce knockback during dash/roll
+		velocity = knockback_velocity * 0.3
+	else:
+		velocity = knockback_velocity
+		# Add slight upward force if on ground
+		if is_on_floor():
+			velocity.y = min(velocity.y, -100)
+
 func take_damage(amount: int):
 	if invincible or is_dashing or is_rolling:
 		return
 
 	sfx_hurt.play()
-	
-	# Sharp, medium rumble for 0.3 seconds
 	Input.start_joy_vibration(0, 0.5, 0.8, 0.3)
 	
 	health -= amount

@@ -27,7 +27,7 @@ var health = 2
 var is_attacking = false
 
 func _ready():
-	add_to_group("skeletons")
+	add_to_group("enemies")
 	collision_shape_2d_top.disabled = false
 	collision_shape_2d_bottom.disabled = false
 	

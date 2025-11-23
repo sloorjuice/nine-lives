@@ -1331,7 +1331,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_adwsw"]
-radius = 2.6114872
+radius = 3.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_88yyn"]
 size = Vector2(6, 12)
@@ -1352,7 +1352,6 @@ frame = 9
 frame_progress = 1.0
 
 [node name="TopHitBox" type="CollisionShape2D" parent="."]
-position = Vector2(0, 0.11)
 shape = SubResource("CircleShape2D_adwsw")
 
 [node name="BottomHitBox" type="CollisionShape2D" parent="."]
@@ -1399,3 +1398,5 @@ stream = ExtResource("29_efrwb")
 
 [node name="SFX_Death" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("30_j5n4i")
+
+[node name="SFX_Meow" type="AudioStreamPlayer2D" parent="."]
