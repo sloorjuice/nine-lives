@@ -9,11 +9,12 @@ func _ready():
 	if player:
 		# Connect to the player's lives_changed signal
 		player.lives_changed.connect(_on_player_lives_changed)
-		# Set initial text
-		_on_player_lives_changed(player.lives)
+		# Set initial text from GameManager
+		var game_manager = get_node("/root/GameManager")
+		_on_player_lives_changed(game_manager.get_lives())
 	else:
 		text = "Lives: ?"
 		print("Warning: Player not found for lives UI")
 
 func _on_player_lives_changed(new_lives: int):
-	text = "Lives: " + str(new_lives)
+	text = str(new_lives)

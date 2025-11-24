@@ -1,6 +1,6 @@
 [gd_scene load_steps=66 format=3 uid="uid://detynhaayvji4"]
 
-[ext_resource type="Script" uid="uid://b43avo63tqdlu" path="res://skeleton.gd" id="1_d56fl"]
+[ext_resource type="Script" path="res://skeleton.gd" id="1_d56fl"]
 [ext_resource type="Texture2D" uid="uid://brc8opc3xtur4" path="res://assets/sprites/Sprite Pack 6/3 - Skeleton/Bone_Pile (32 x 32).png" id="1_sh88d"]
 [ext_resource type="Texture2D" uid="uid://bbu1dine2i861" path="res://assets/sprites/Sprite Pack 6/3 - Skeleton/Bone_Pile_Wakeup (32 x 32).png" id="2_d56fl"]
 [ext_resource type="AudioStream" uid="uid://bv8w2c6bwr2nv" path="res://assets/audio/skeleton-throw.wav" id="2_pyp1f"]
@@ -419,11 +419,11 @@ radius = 6.0
 size = Vector2(9, 16)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sh88d"]
-radius = 100.04499
+radius = 155.00322
 
 [node name="skeleton" type="CharacterBody2D"]
 collision_layer = 4
-collision_mask = 7
+collision_mask = 39
 script = ExtResource("1_d56fl")
 
 [node name="SFX_Throw" type="AudioStreamPlayer2D" parent="."]

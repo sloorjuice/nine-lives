@@ -9,6 +9,12 @@ extends CharacterBody2D
 @onready var sfx_hurt: AudioStreamPlayer2D = $SFX_Hurt
 @onready var sfx_death: AudioStreamPlayer2D = $SFX_Death
 @onready var sfx_meow: AudioStreamPlayer2D = $SFX_Meow
+@onready var combo_counter: Label = get_node("/root/Node2D/GUI/ComboCounter")
+@onready var combo_timer_bar: ProgressBar = get_node("/root/Node2D/GUI/ComboTimer")
+@onready var detection_area: Area2D = $DetectionArea
+
+# NEW: Reference to the Regeneration Delay Progress Bar
+@onready var regen_timer_bar: ProgressBar = get_node("/root/Node2D/GUI/RegenTimerBar")
 
 # NEW: Preload your meow sounds
 var meow_sounds = [
@@ -29,7 +35,7 @@ const JUMP_BUFFER_TIME = 0.1
 const JUMP_CUT_MULTIPLIER = 0.3
 const DASH_SPEED = 250.0
 const DASH_DURATION = 0.3
-const DASH_COOLDOWN = 1.5
+const DASH_COOLDOWN = 1.2
 const ROLL_SPEED = 300.0
 const ROLL_DURATION = 0.4
 const ROLL_COOLDOWN = 0.2
@@ -38,16 +44,17 @@ const WALL_CLIMB_DOWN_SPEED = 80.0
 const WALL_SLIDE_SPEED = 50.0
 const WALL_JUMP_VELOCITY = Vector2(300, -280)
 
-@export var death_threshold: float = 280.0
-@export var kill_threshold: float = 400.0
+const COMBO_TIMEOUT = 5.0
+
+@export var death_threshold: float = 500.0
+@export var kill_threshold: float = 530.0
 @export var death_animation_duration: float = 0.5
 
 const DAMAGE_NORMAL = 1
 const DAMAGE_HEAVY = 3
 
 # --- LIVES SYSTEM ---
-const MAX_LIVES = 9
-var lives := MAX_LIVES
+# Lives are now managed globally by GameManager
 signal lives_changed(new_lives: int)
 signal health_changed(new_health: float, max_health: int)
 
@@ -90,6 +97,9 @@ var health := 5.0
 var regen_rate := 2.5
 const REGEN_DELAY_TIME = 5.2
 var regen_delay_timer = 0.0
+var platform_drop_timer = 0.0
+var combo_count := 0
+var combo_timer := 0.0
 
 var invincible := false
 var invincibility_time := 0.6
@@ -109,8 +119,20 @@ func _ready():
 
 	_default_hitbox_scale_x = abs(hitbox.scale.x)
 	
-	lives_changed.emit(lives)
+	# Emit current lives from GameManager
+	var game_manager = get_node("/root/GameManager")
+	lives_changed.emit(game_manager.get_lives())
 	was_on_floor = is_on_floor()
+	
+	combo_counter.visible = false
+	
+	combo_timer_bar.max_value = COMBO_TIMEOUT
+	combo_timer_bar.visible = false
+	
+	if regen_timer_bar:
+		regen_timer_bar.max_value = REGEN_DELAY_TIME
+		regen_timer_bar.value = REGEN_DELAY_TIME
+		regen_timer_bar.visible = false
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventJoypadButton or event is InputEventJoypadMotion:
@@ -122,10 +144,29 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("meow"):
 		play_random_meow()
 		
+	# Update combo timer
+	if combo_timer > 0:
+		combo_timer -= delta
+		if combo_timer_bar:
+			combo_timer_bar.value = combo_timer
+		if combo_timer <= 0:
+			reset_combo()
+		
+	# NEW: Health Regen Delay Logic
 	if regen_delay_timer > 0.0:
 		regen_delay_timer -= delta
+		
+		# Update and show the progress bar
+		if regen_timer_bar:
+			regen_timer_bar.value = regen_delay_timer
+			if not regen_timer_bar.visible:
+				regen_timer_bar.visible = true
 	
 	if regen_delay_timer <= 0.0:
+		# Hide the progress bar once regeneration starts
+		if regen_timer_bar and regen_timer_bar.visible:
+			regen_timer_bar.visible = false
+			
 		var old_health = health
 		health = min(max_health, health + regen_rate * delta)
 		if health != old_health:
@@ -155,13 +196,13 @@ func _physics_process(delta: float) -> void:
 	# NEW: Check for directional attack inputs (right stick)
 	if not is_attacking and not is_dashing and not is_rolling and not is_wall_clinging:
 		if Input.is_action_just_pressed("attack_up"):
-			perform_directional_attack(-1.0)  # Up
+			perform_directional_attack(-1.0) # Up
 		elif Input.is_action_just_pressed("attack_down"):
-			perform_directional_attack(1.0)   # Down
+			perform_directional_attack(1.0) # Down
 		elif Input.is_action_just_pressed("attack_left"):
-			perform_directional_attack(0.0, -1)  # Left
+			perform_directional_attack(0.0, -1)# Left
 		elif Input.is_action_just_pressed("attack_right"):
-			perform_directional_attack(0.0, 1)   # Right
+			perform_directional_attack(0.0, 1) # Right
 		elif Input.is_action_just_pressed("attack"):
 			perform_attack("attack")
 		elif Input.is_action_just_pressed("attack_heavy") and is_on_floor():
@@ -177,6 +218,12 @@ func _physics_process(delta: float) -> void:
 			is_wall_clinging = true
 			can_double_jump = true
 			var vertical_input = Input.get_axis("move_up", "move_down")
+			# Also check WASD keys directly for keyboard/mouse
+			if vertical_input == 0.0 and input_type == InputType.KEYBOARD_MOUSE:
+				if Input.is_action_pressed("move_up"):
+					vertical_input = -1.0
+				elif Input.is_action_pressed("move_down"):
+					vertical_input = 1.0
 			if vertical_input < 0:
 				velocity.y = -WALL_CLIMB_SPEED
 			elif vertical_input > 0:
@@ -223,7 +270,9 @@ func _physics_process(delta: float) -> void:
 	if dash_cooldown_timer > 0: dash_cooldown_timer -= delta
 	if dash_timer > 0:
 		dash_timer -= delta
-		if dash_timer <= 0: is_dashing = false
+		if dash_timer <= 0: 
+			is_dashing = false
+			rotation = 0.0 
 	
 	# FIXED: Only vibrate if dash actually starts
 	if Input.is_action_just_pressed("dash") and dash_cooldown_timer <= 0 and not is_dashing and not is_rolling and not is_attacking:
@@ -231,20 +280,70 @@ func _physics_process(delta: float) -> void:
 		Input.start_joy_vibration(0, 0.2, 0.4, 0.1)
 		
 		var dash_input_dir := Input.get_axis("move_left", "move_right")
-		var intended_dir := facing_direction 
-
-		if abs(dash_input_dir) > 0.1:
-			intended_dir = 1 if dash_input_dir > 0 else -1
-		elif abs(velocity.x) > 10:
-			intended_dir = 1 if velocity.x > 0 else -1
-
-		dash_direction = intended_dir
-		facing_direction = intended_dir
-		animated_sprite_2d.flip_h = facing_direction < 0
+		var vertical_input := Input.get_axis("move_up", "move_down")
+		var intended_dir = facing_direction
+		var dash_angle := 0.0
 		
+		# Handle mouse/keyboard input differently from controller
+		if input_type == InputType.KEYBOARD_MOUSE:
+			# Dash toward mouse cursor
+			var mouse_pos = get_global_mouse_position()
+			var direction_to_mouse = (mouse_pos - global_position).normalized()
+			
+			# Determine if dash is more vertical or horizontal
+			if abs(direction_to_mouse.y) > abs(direction_to_mouse.x):
+				# Vertical dash (up or down)
+				if direction_to_mouse.y > 0:
+					# Dash down
+					dash_angle = PI / 2.0
+					if animated_sprite_2d.flip_h:
+						dash_angle = -PI / 2.0
+					dash_direction = 2  # Special flag for down
+				else:
+					# Dash up
+					dash_angle = -PI / 2.0
+					if animated_sprite_2d.flip_h:
+						dash_angle = PI / 2.0
+					dash_direction = 3  # Special flag for up
+			else:
+				# Horizontal dash
+				intended_dir = 1 if direction_to_mouse.x > 0 else -1
+				dash_direction = intended_dir
+				facing_direction = intended_dir
+				animated_sprite_2d.flip_h = facing_direction < 0
+		else:
+			# Controller input - use original logic
+			# Determine dash direction and rotation
+			if abs(vertical_input) > 0.5:
+				# Vertical dash (up or down)
+				if vertical_input > 0:
+					# Dash down
+					dash_angle = PI / 2.0
+					if animated_sprite_2d.flip_h:
+						dash_angle = -PI / 2.0
+					dash_direction = 2  # Special flag for down
+				else:
+					# Dash up
+					dash_angle = -PI / 2.0
+					if animated_sprite_2d.flip_h:
+						dash_angle = PI / 2.0
+					dash_direction = 3  # Special flag for up
+			else:
+				# Horizontal dash
+				if abs(dash_input_dir) > 0.1:
+					intended_dir = 1 if dash_input_dir > 0 else -1
+				elif abs(velocity.x) > 10:
+					intended_dir = 1 if velocity.x > 0 else -1
+			
+				dash_direction = intended_dir
+				facing_direction = intended_dir
+				animated_sprite_2d.flip_h = facing_direction < 0
+		
+		rotation = dash_angle
 		is_dashing = true
 		dash_timer = DASH_DURATION
 		dash_cooldown_timer = DASH_COOLDOWN
+		can_double_jump = true
 	
 	if roll_cooldown_timer > 0: roll_cooldown_timer -= delta
 	if roll_timer > 0:
@@ -252,12 +351,12 @@ func _physics_process(delta: float) -> void:
 		if roll_timer <= 0: is_rolling = false
 	
 	# FIXED: Only vibrate if roll actually starts
-	if Input.is_action_just_pressed("roll") and roll_cooldown_timer <= 0 and not is_rolling and is_on_floor() and not is_attacking:
+	if Input.is_action_just_pressed("roll") and roll_cooldown_timer <= 0 and is_on_floor() and not is_attacking:
 		sfx_dash.play()
 		Input.start_joy_vibration(0, 0.2, 0.4, 0.1)
 		
 		var roll_input_dir := Input.get_axis("move_left", "move_right")
-		var intended_dir := facing_direction 
+		var intended_dir := facing_direction
 
 		if abs(roll_input_dir) > 0.1:
 			intended_dir = 1 if roll_input_dir > 0 else -1
@@ -287,7 +386,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("jump") and not is_attacking:
 		jump_buffer_timer = JUMP_BUFFER_TIME
 
-	var jump_executed = false  # Track if jump actually happens
+	var jump_executed = false # Track if jump actually happens
 	
 	if jump_buffer_timer > 0 and not is_attacking:
 		if is_on_floor() or coyote_timer > 0:
@@ -328,7 +427,8 @@ func _physics_process(delta: float) -> void:
 		is_jumping = false
 	
 	var move_input := Input.get_axis("move_left", "move_right")
-	if input_type == InputType.CONTROLLER or mouse_aim_lock_timer <= 0.0:
+	# Don't update facing direction while wall clinging
+	if not is_wall_clinging and (input_type == InputType.CONTROLLER or mouse_aim_lock_timer <= 0.0):
 		if move_input > 0.1:
 			facing_direction = 1
 		elif move_input < -0.1:
@@ -337,8 +437,15 @@ func _physics_process(delta: float) -> void:
 	if is_attacking:
 		velocity.x = 0
 	elif is_dashing:
-		velocity.x = dash_direction * DASH_SPEED
-		velocity.y = 0
+		if dash_direction == 2:  # Down dash
+			velocity.x = 0
+			velocity.y = DASH_SPEED
+		elif dash_direction == 3:  # Up dash
+			velocity.x = 0
+			velocity.y = -DASH_SPEED
+		else:  # Horizontal dash
+			velocity.x = dash_direction * DASH_SPEED
+			velocity.y = 0
 	elif is_rolling:
 		velocity.x = roll_direction * ROLL_SPEED
 	elif is_wall_clinging:
@@ -355,8 +462,26 @@ func _physics_process(delta: float) -> void:
 	# Store velocity before move_and_slide resets it
 	var velocity_before_collision = velocity.y
 	
+	# Handle platform drop timer
+	if platform_drop_timer > 0:
+		platform_drop_timer -= delta
+		set_collision_mask_value(6, false) # Keep collision disabled
+		if platform_drop_timer <= 0:
+			set_collision_mask_value(6, true) # Re-enable collision
+
+	# Allow dropping through one-way platforms
+	if is_on_floor() and Input.is_action_just_pressed("move_down"):
+		# Check if we're standing on a one-way platform
+		for i in get_slide_collision_count():
+			var collision = get_slide_collision(i)
+			var collider = collision.get_collider()
+			if collider.name == "OneWayPlatforms":
+				platform_drop_timer = 0.3 # Disable collision for 0.3 seconds
+				set_collision_mask_value(6, false)
+				break
+
 	move_and_slide()
-	
+		
 	# NEW: Ground collision vibration (landing detection)
 	# Check if we just landed (wasn't on floor, now on floor) with significant downward velocity
 	if is_on_floor() and not was_on_floor and velocity_before_collision > 100:
@@ -367,7 +492,12 @@ func _physics_process(delta: float) -> void:
 	# Update floor state for next frame
 	was_on_floor = is_on_floor()
 	
-	update_animations()
+	# MOVED: Call update_animations() from _process instead (see below)
+
+# NEW: Add this to keep animations updating even when physics is paused
+func _process(delta: float) -> void:
+	if not is_dying:  # Don't override animations while dying
+		update_animations()  # Ensures sprite animates during cinematic (e.g., idle)
 
 func play_random_meow():
 	if meow_sounds.size() > 0:
@@ -506,14 +636,36 @@ func check_hitbox_collision(anim_type):
 	for body in bodies:
 		if body.has_method("take_damage") and body != self:
 			body.take_damage(damage, global_position)
-			print("Hit enemy for ", damage, " damage!")
+			
+			# Increment combo
+			combo_count += 1
+			combo_timer = COMBO_TIMEOUT
+			update_combo_display()
+			
+			print("Hit enemy for ", damage, " damage! Combo: ", combo_count)
+	
+	# NEW: Check for projectiles (bones)
+	var areas = hitbox.get_overlapping_areas()
+	for area in areas:
+		if area.is_in_group("bone"):  # Or check area.name.contains("bone")
+			area.queue_free()  # Destroy the bone
+			# Optionally increment combo
+			combo_count += 1
+			combo_timer = COMBO_TIMEOUT
+			update_combo_display()
 
 func start_death():
 	is_dying = true
 	velocity = Vector2.ZERO
+	rotation = 0.0  # Reset rotation in case player died while dashing/attacking
+	is_attacking = false
+	is_dashing = false
+	is_rolling = false
+	
 	sfx_death.play()
 	Input.start_joy_vibration(0, 1.0, 1.0, 1.0)
 	animated_sprite_2d.play("death")
+	
 	await get_tree().create_timer(death_animation_duration).timeout
 	respawn()
 
@@ -524,19 +676,25 @@ func _on_animation_finished():
 	if is_attacking:
 		is_attacking = false
 		rotation = 0.0
+	
+	# Reset rotation after dash ends
+	if is_dashing and animated_sprite_2d.animation == "dash":
+		rotation = 0.0
 
 func respawn():
 	if is_game_over:
 		return
 	
-	lives -= 1
-	lives_changed.emit(lives)
+	# Use GameManager's global lives system
+	var game_manager = get_node("/root/GameManager")
+	var has_lives_remaining = game_manager.lose_life()
+	lives_changed.emit(game_manager.get_lives())
 	
-	if lives <= 0:
+	if not has_lives_remaining:
 		is_game_over = true
 		velocity = Vector2.ZERO
 		await get_tree().create_timer(2.0).timeout
-		get_tree().reload_current_scene()
+		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 		return
 	
 	is_dying = false
@@ -564,6 +722,10 @@ func respawn():
 		was_on_floor = true
 
 func update_animations():
+	# Early return if dying to prevent overriding death animation
+	if is_dying:
+		return
+		
 	if not is_dashing and not is_rolling and not is_attacking:
 		if is_wall_clinging:
 			var wall_normal = get_wall_normal()
@@ -631,9 +793,16 @@ func take_damage(amount: int):
 	sfx_hurt.play()
 	Input.start_joy_vibration(0, 0.5, 0.8, 0.3)
 	health -= amount
+	reset_combo() 
 	health = max(health, 0)
 	health_changed.emit(health, max_health)
 	regen_delay_timer = REGEN_DELAY_TIME
+	
+	regen_delay_timer = REGEN_DELAY_TIME
+	if regen_timer_bar:
+		regen_timer_bar.value = REGEN_DELAY_TIME
+		regen_timer_bar.visible = true
+		
 	if health <= 0:
 		start_death()
 		return
@@ -652,6 +821,25 @@ func take_damage(amount: int):
 	await get_tree().create_timer(invincibility_time).timeout
 	invincible = false
 
+func update_combo_display():
+	if not combo_counter:
+		return
+	
+	if combo_count > 0:
+		combo_counter.text = str(combo_count) + "x"
+		combo_counter.visible = true
+		if combo_timer_bar:
+			combo_timer_bar.visible = true
+			combo_timer_bar.value = combo_timer
+	else:
+		combo_counter.visible = false
+		if combo_timer_bar:
+			combo_timer_bar.visible = false
+
+func reset_combo():
+	combo_count = 0
+	combo_timer = 0.0
+	update_combo_display()
 
 func _on_hitbox_body_entered(body):
 	pass

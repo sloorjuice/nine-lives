@@ -1,0 +1,229 @@
+[gd_scene load_steps=15 format=3 uid="uid://vwsq00lpldxc"]
+
+[ext_resource type="Texture2D" uid="uid://d0r24jhyo303p" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/6/Day/1.png" id="1_rtw2f"]
+[ext_resource type="Script" uid="uid://uq3g2syps8ei" path="res://scenes/main_menu.gd" id="1_tbmy8"]
+[ext_resource type="Script" uid="uid://bhvhi2qxgo6ao" path="res://scenes/bg.gd" id="2_5dd4i"]
+[ext_resource type="Texture2D" uid="uid://1qlpya6wb6sd" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/6/Day/2.png" id="2_oa1go"]
+[ext_resource type="Texture2D" uid="uid://bsjo1tttlwp3f" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/6/Day/3.png" id="3_tbmy8"]
+[ext_resource type="Texture2D" uid="uid://c36is34kin13p" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/6/Day/4.png" id="4_jk1qb"]
+[ext_resource type="Texture2D" uid="uid://c6kpt8os4lx6j" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/6/Day/5.png" id="5_5dd4i"]
+[ext_resource type="Texture2D" uid="uid://cpwcsgljybu6h" path="res://assets/sprites/NineLivesTitleCardBlue.png" id="6_lgwnu"]
+[ext_resource type="FontFile" uid="uid://baejtw4fvb0a4" path="res://assets/PixelatedEleganceRegular-ovyAA.ttf" id="7_oa1go"]
+[ext_resource type="AudioStream" uid="uid://bdtyqtsqxmovg" path="res://assets/audio/Clement Panchout _ LJ_Tel_HipHop.wav" id="10_5dd4i"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbmy8"]
+bg_color = Color(0.4392157, 0.6039216, 0.8156863, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jk1qb"]
+bg_color = Color(0.3019608, 0.42745098, 0.9529412, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5dd4i"]
+bg_color = Color(0.6, 0.8509804, 0.91764706, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lgwnu"]
+bg_color = Color(0.6, 0.8509804, 0.91764706, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tbmy8")
+
+[node name="BG" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -76.34
+offset_right = 20.0
+offset_bottom = -36.34008
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.9, 0.9)
+script = ExtResource("2_5dd4i")
+sway_speed = 0.4
+sway_amount = 16.0
+
+[node name="TextureRect" type="TextureRect" parent="BG"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = -162.0
+offset_right = 288.0
+offset_bottom = 162.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.3, 1.3)
+texture = ExtResource("1_rtw2f")
+
+[node name="TextureRect2" type="TextureRect" parent="BG"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = -162.0
+offset_right = 288.0
+offset_bottom = 162.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.3, 1.3)
+texture = ExtResource("2_oa1go")
+
+[node name="TextureRect3" type="TextureRect" parent="BG"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = -162.0
+offset_right = 288.0
+offset_bottom = 162.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.3, 1.3)
+texture = ExtResource("3_tbmy8")
+
+[node name="TextureRect4" type="TextureRect" parent="BG"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = -162.0
+offset_right = 288.0
+offset_bottom = 162.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.3, 1.3)
+texture = ExtResource("4_jk1qb")
+
+[node name="TextureRect5" type="TextureRect" parent="BG"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -288.0
+offset_top = -162.0
+offset_right = 288.0
+offset_bottom = 162.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.3, 1.3)
+texture = ExtResource("5_5dd4i")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("6_lgwnu")
+stretch_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(98, 22)
+layout_mode = 2
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("7_oa1go")
+theme_override_styles/normal = SubResource("StyleBoxFlat_tbmy8")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jk1qb")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5dd4i")
+theme_override_styles/focus = SubResource("StyleBoxFlat_lgwnu")
+text = "Play"
+
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(98, 22)
+layout_mode = 2
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("7_oa1go")
+theme_override_styles/normal = SubResource("StyleBoxFlat_tbmy8")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jk1qb")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5dd4i")
+theme_override_styles/focus = SubResource("StyleBoxFlat_lgwnu")
+text = "Quit"
+
+[node name="BGMPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_5dd4i")
+volume_db = -12.0
+autoplay = true

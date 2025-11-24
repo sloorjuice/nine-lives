@@ -1,4 +1,4 @@
-[gd_scene load_steps=203 format=3 uid="uid://mcs3gat6hnxr"]
+[gd_scene load_steps=204 format=3 uid="uid://mcs3gat6hnxr"]
 
 [ext_resource type="Texture2D" uid="uid://dhhllnr7it1r7" path="res://assets/sprites/CatCharacterAnimations1.1/SpriteSheets/AlternativeColour/Outlined_15_Alternative_Colour_Cat_Attack-Sheet.png" id="1_dx0e4"]
 [ext_resource type="Script" uid="uid://c8gq7knyacdkc" path="res://player.gd" id="1_jm5j8"]
@@ -1337,21 +1337,22 @@ radius = 3.0
 size = Vector2(6, 12)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jm5j8"]
-size = Vector2(22, 21)
+size = Vector2(32, 34)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j5n4i"]
+size = Vector2(961, 646)
 
 [node name="Player" type="CharacterBody2D"]
-collision_mask = 30
+collision_mask = 254
 script = ExtResource("1_jm5j8")
-death_threshold = null
-kill_threshold = null
-death_animation_duration = null
+death_threshold = 450.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 texture_repeat = 1
 sprite_frames = SubResource("SpriteFrames_3f83b")
-animation = &"attack_heavy"
-frame = 9
+animation = &"death"
+frame = 8
 frame_progress = 1.0
 
 [node name="TopHitBox" type="CollisionShape2D" parent="."]
@@ -1361,26 +1362,12 @@ shape = SubResource("CircleShape2D_adwsw")
 position = Vector2(0, 6)
 shape = SubResource("RectangleShape2D_88yyn")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(0, -1)
-zoom = Vector2(1.35, 1.35)
-limit_left = 0
-limit_bottom = 300
-position_smoothing_enabled = true
-position_smoothing_speed = 14.0
-drag_horizontal_enabled = true
-drag_vertical_enabled = true
-drag_left_margin = 0.3
-drag_top_margin = 0.09
-drag_right_margin = 0.3
-drag_bottom_margin = 0.02
-
 [node name="Hitbox" type="Area2D" parent="."]
 collision_layer = 0
-collision_mask = 4
+collision_mask = 68
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(15, 1.5)
+position = Vector2(20, 2)
 shape = SubResource("RectangleShape2D_jm5j8")
 debug_color = Color(0.7175735, 0, 0.15176308, 0.41960785)
 
@@ -1403,3 +1390,12 @@ stream = ExtResource("29_efrwb")
 stream = ExtResource("30_j5n4i")
 
 [node name="SFX_Meow" type="AudioStreamPlayer2D" parent="."]
+
+[node name="DetectionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 132
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_j5n4i")
+debug_color = Color(0.67058825, 0.35686275, 0.9098039, 0.03529412)

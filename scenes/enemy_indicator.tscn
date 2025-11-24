@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dvxe8aoygmqck"]
+
+[node name="EnemyIndicator" type="ColorRect"]
+custom_minimum_size = Vector2(60, 10)
+offset_right = 40.0
+offset_bottom = 40.0
+pivot_offset = Vector2(30, 5)
+color = Color(1, 0, 0.003921569, 1)

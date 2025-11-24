@@ -1,36 +1,42 @@
 extends CanvasLayer
 
+# --- NEW: Define the signal the door will listen for ---
+signal all_enemies_dead
+
 @onready var label: Label = $SkeletonCounter
 
 var total_initial := 0
-# Define the path to your next scene.
-# IMPORTANT: You must replace "res://scenes/thanks_for_playing.tscn" with the actual path to your scene.
-const NEXT_SCENE_PATH = "res://scenes/thanks_for_playing.tscn"
 const ENEMY_GROUP = "enemies"
+var scene_queued = false # Prevent running the signal/scene change multiple times
 
 func _ready():
+	# Make sure other nodes (like the Door) can find this counter
+	add_to_group("enemy_counter")
+	
 	# Wait until everything in the scene tree is fully ready
-	await get_tree().process_frame   # or use call_deferred(_count_initial_enemies)
+	await get_tree().process_frame
 	total_initial = get_tree().get_nodes_in_group(ENEMY_GROUP).size()
 	
+	# If there are enemies, start displaying the count
 	if total_initial > 0:
 		update_label()
-	else:
-		queue_next_scene()
 
 
 func _process(delta):
 	# Using _process for this is fine for simple enemy counting.
-	# For larger games, you might use a signal on enemy death instead.
 	update_label()
 
 func update_label():
 	var alive_count = get_tree().get_nodes_in_group(ENEMY_GROUP).size()
+	
+	# Only update the label if the count is still changing
 	label.text = "%d/%d" % [alive_count, total_initial]
 
-	if alive_count <= 0 and total_initial > 0:
-		queue_next_scene()
+	# Check for completion
+	if alive_count <= 0 and total_initial > 0 and not scene_queued:
+		# --- START CINEMATIC: PAUSE THE GAME ---
+		get_tree().paused = true 
 		
-func queue_next_scene():
-	# Use call_deferred to avoid changing the scene while in _process
-	get_tree().call_deferred("change_scene_to_file", NEXT_SCENE_PATH)
+		# Emit the signal to unlock the door
+		all_enemies_dead.emit() 
+		scene_queued = true # Mark as done to prevent repeated signals

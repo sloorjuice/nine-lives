@@ -168,7 +168,7 @@ func handle_attack_state():
 	play_anim("fly")
 
 func finish_attack():
-	if hitbox: hitbox.monitoring = false
+	if hitbox: hitbox.set_deferred("monitoring", false)  # FIXED: Use set_deferred
 	current_state = State.ACTIVE
 	attack_timer.start()
 
@@ -198,7 +198,7 @@ func deal_damage_to_player(target):
 		velocity = -knock_dir * MONSTER_RECOIL_FORCE
 		
 		current_state = State.RECOIL
-		if hitbox: hitbox.monitoring = false
+		if hitbox: hitbox.set_deferred("monitoring", false)  # FIXED: Use set_deferred
 		
 		await get_tree().create_timer(0.4).timeout
 		
@@ -241,7 +241,7 @@ func take_damage(amount, attacker_pos = null):
 	current_state = State.HURT
 	sfx_hurt.play()
 	rotation = 0 # Reset tilt
-	if hitbox: hitbox.monitoring = false 
+	if hitbox: hitbox.set_deferred("monitoring", false)  # FIXED: Use set_deferred
 	
 	if attacker_pos:
 		var knock_dir = (global_position - attacker_pos).normalized()
@@ -256,7 +256,7 @@ func take_damage(amount, attacker_pos = null):
 func retreat():
 	current_state = State.IDLE
 	player = null
-	if hitbox: hitbox.monitoring = false
+	if hitbox: hitbox.set_deferred("monitoring", false)  # FIXED: Use set_deferred
 	play_anim("idle")
 
 func die():

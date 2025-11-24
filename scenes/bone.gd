@@ -6,6 +6,7 @@ var velocity = Vector2.ZERO
 const GRAVITY = 300.0  # Bones arc downward
 
 func _ready():
+	add_to_group("bone")
 	animated_sprite.play("spinning_bone")
 	body_entered.connect(_on_body_entered)
 	$VisibleOnScreenNotifier2D.screen_exited.connect(_on_screen_exited)

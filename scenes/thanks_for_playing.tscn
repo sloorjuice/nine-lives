@@ -1,11 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://b6e3jj6sfysoe"]
+[gd_scene load_steps=8 format=3 uid="uid://bpyt0u3hnhoi1"]
 
 [ext_resource type="FontFile" uid="uid://baejtw4fvb0a4" path="res://assets/PixelatedEleganceRegular-ovyAA.ttf" id="1_cfell"]
-[ext_resource type="Texture2D" uid="uid://tf2hp0071hbk" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/5/Night/1.png" id="1_i1gb3"]
-[ext_resource type="Texture2D" uid="uid://e7tneuq7luxp" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/5/Night/2.png" id="2_na8tq"]
-[ext_resource type="Texture2D" uid="uid://cwwihdbjntokf" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/5/Night/3.png" id="3_ysrj2"]
-[ext_resource type="Texture2D" uid="uid://11s23qvtler7" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/5/Night/4.png" id="4_51qlj"]
-[ext_resource type="Texture2D" uid="uid://dhtjuuupe4twv" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/5/Night/5.png" id="5_t7a3d"]
+[ext_resource type="Texture2D" uid="uid://c1ned2u2glfti" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/1/Day/1.png" id="1_na8tq"]
+[ext_resource type="Texture2D" uid="uid://c2neg042snt4i" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/1/Day/2.png" id="2_ysrj2"]
+[ext_resource type="Texture2D" uid="uid://cmi3hpg1xdpo3" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/1/Day/3.png" id="3_51qlj"]
+[ext_resource type="Texture2D" uid="uid://dohapytbfvi1h" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/1/Day/4.png" id="4_t7a3d"]
+[ext_resource type="Texture2D" uid="uid://cwmfrnv5oc82c" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/1/Day/5.png" id="5_i5lih"]
+[ext_resource type="AudioStream" uid="uid://bqw5r7mascbqc" path="res://assets/audio/2016_ Clement Panchout_ Life is full of Joy.wav" id="7_na8tq"]
 
 [node name="Thanks_For_Playing" type="Node2D"]
 
@@ -13,23 +14,23 @@
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer"]
 position = Vector2(221, 163)
-texture = ExtResource("1_i1gb3")
+texture = ExtResource("1_na8tq")
 
 [node name="Sprite2D2" type="Sprite2D" parent="CanvasLayer"]
 position = Vector2(221, 163)
-texture = ExtResource("2_na8tq")
+texture = ExtResource("2_ysrj2")
 
 [node name="Sprite2D3" type="Sprite2D" parent="CanvasLayer"]
 position = Vector2(221, 163)
-texture = ExtResource("3_ysrj2")
+texture = ExtResource("3_51qlj")
 
 [node name="Sprite2D4" type="Sprite2D" parent="CanvasLayer"]
 position = Vector2(221, 163)
-texture = ExtResource("4_51qlj")
+texture = ExtResource("4_t7a3d")
 
 [node name="Sprite2D5" type="Sprite2D" parent="CanvasLayer"]
 position = Vector2(221, 163)
-texture = ExtResource("5_t7a3d")
+texture = ExtResource("5_i5lih")
 
 [node name="Thanks" type="Label" parent="CanvasLayer"]
 texture_filter = 1
@@ -139,7 +140,8 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 theme_override_fonts/font = ExtResource("1_cfell")
 theme_override_font_sizes/font_size = 14
-text = "Clement Panchout - Partycles"
+text = "Clement Panchout – 
+www.clementpanchout.com"
 horizontal_alignment = 1
 
 [node name="Credits5" type="Label" parent="CanvasLayer"]
@@ -242,3 +244,7 @@ theme_override_font_sizes/font_size = 14
 text = "Free-game-assets - Free Cyberpunk 
 Backgrounds Pixel Art"
 horizontal_alignment = 1
+
+[node name="BGMPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_na8tq")
+autoplay = true
