@@ -46,108 +46,67 @@ func _on_all_enemies_dead():
 		_finish_cinematic()
 		return
 	
-	# Brief pause before cinematic starts
 	await get_tree().create_timer(0.3, true, false, true).timeout
 	
-	# Freeze player completely
+	# Freeze player
 	player_node.set_physics_process(false)
 	player_node.set_process_input(false)
 	player_node.velocity = Vector2.ZERO
 	
 	var cam: Camera2D = player_node.get_node("Camera2D")
-	print("Player: ", player_node)
-	print("Cam: ", player_node.get_node("Camera2D") if player_node else null)
 	if not cam or not is_instance_valid(cam):
 		print("DOOR ERROR: No Camera2D on player! Skipping cinematic.")
 		_finish_cinematic(player_node)
 		return
 	
-	# Save camera settings
-	var orig_smoothing = cam.position_smoothing_enabled
-	var orig_smoothing_speed = cam.position_smoothing_speed
-	var orig_limit_smoothed = cam.limit_smoothed
-	var orig_limits = {
-		"left": cam.limit_left, "right": cam.limit_right,
-		"top": cam.limit_top, "bottom": cam.limit_bottom
-	}
-	
-	# Make camera independent and always process
-	cam.process_mode = Node.PROCESS_MODE_ALWAYS
-	cam.position_smoothing_enabled = false
-	cam.limit_smoothed = false
-	cam.limit_left = -10000000
-	cam.limit_right = 10000000
-	cam.limit_top = -10000000
-	cam.limit_bottom = 10000000
-	
-	# Reparent camera to world
+	# Temporary cinematic camera (do not touch limits of player cam)
 	var world = get_tree().current_scene
-	var cam_start_pos = cam.global_position
-	cam.reparent(world)
-	cam.global_position = cam_start_pos
+	var cine_cam := Camera2D.new()
+	cine_cam.name = "CinematicCamera"
+	cine_cam.global_position = cam.global_position
+	cine_cam.position_smoothing_enabled = false
+	world.add_child(cine_cam)
+	cine_cam.make_current()  # Activate cinematic camera
 	
-	# Smooth pan to door with easing
+	# Tween to door
 	var tween_to_door = create_tween()
 	tween_to_door.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 	tween_to_door.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-	
 	var door_target = global_position + Vector2(0, -80)
-	tween_to_door.tween_property(cam, "global_position", door_target, 1.8)
-	
+	tween_to_door.tween_property(cine_cam, "global_position", door_target, 1.8)
 	await tween_to_door.finished
 	
-	# Small delay to let player see the door
 	await get_tree().create_timer(0.4, true, false, true).timeout
 	
-	# Open door with subtle camera shake
+	# Open door with shake
 	player_collision_shape.set_deferred("disabled", true)
 	animated_sprite_2d.play("opening")
 	audio_stream_player_2d.play()
 	
-	# Camera shake during door opening
 	var shake_tween = create_tween()
 	shake_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 	shake_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	
 	for i in range(3):
 		var shake_offset = Vector2(randf_range(-3, 3), randf_range(-3, 3))
-		shake_tween.tween_property(cam, "offset", shake_offset, 0.05)
-		shake_tween.tween_property(cam, "offset", Vector2.ZERO, 0.05)
+		shake_tween.tween_property(cine_cam, "offset", shake_offset, 0.05)
+		shake_tween.tween_property(cine_cam, "offset", Vector2.ZERO, 0.05)
 	
 	await animated_sprite_2d.animation_finished
 	animated_sprite_2d.play("opened")
 	
-	# Hold on open door
 	await get_tree().create_timer(0.5, true, false, true).timeout
 	
-	# Smooth pan back to player
+	# Pan back to player
 	var tween_back = create_tween()
 	tween_back.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 	tween_back.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-	tween_back.tween_property(cam, "global_position", player_node.global_position, 1.5)
-	
+	tween_back.tween_property(cine_cam, "global_position", player_node.global_position, 1.5)
 	await tween_back.finished
 	
-	# CRITICAL FIX: Reset offset and position BEFORE reparenting
-	cam.offset = Vector2.ZERO
-	cam.global_position = player_node.global_position
-	
-	# Reparent camera back to player
-	cam.reparent(player_node)
-	cam.position = Vector2.ZERO  # Local position to player
-	
-	# Wait one frame for the reparenting to settle
-	await get_tree().process_frame
-	
-	# NOW restore camera settings
-	cam.position_smoothing_enabled = orig_smoothing
-	cam.position_smoothing_speed = orig_smoothing_speed
-	cam.limit_smoothed = orig_limit_smoothed
-	cam.limit_left = orig_limits.left
-	cam.limit_right = orig_limits.right
-	cam.limit_top = orig_limits.top
-	cam.limit_bottom = orig_limits.bottom
-	cam.process_mode = Node.PROCESS_MODE_INHERIT
+	# Restore player camera
+	cam.global_position = cine_cam.global_position
+	cam.make_current()
+	cine_cam.queue_free()
 	
 	_finish_cinematic(player_node)
 	

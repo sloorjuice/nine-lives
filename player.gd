@@ -108,6 +108,7 @@ var hit_stun_time := 0.3
 var hit_stun_timer := 0.0
 
 var is_attacking = false
+var is_hurt := false  # NEW
 
 func _ready():
 	add_to_group("player")
@@ -672,12 +673,11 @@ func start_death():
 func _on_animation_finished():
 	if is_dying and animated_sprite_2d.animation == "death":
 		respawn()
-	
+	if animated_sprite_2d.animation == "take_damage":
+		is_hurt = false  # NEW: release hurt state
 	if is_attacking:
 		is_attacking = false
 		rotation = 0.0
-	
-	# Reset rotation after dash ends
 	if is_dashing and animated_sprite_2d.animation == "dash":
 		rotation = 0.0
 
@@ -722,10 +722,11 @@ func respawn():
 		was_on_floor = true
 
 func update_animations():
-	# Early return if dying to prevent overriding death animation
 	if is_dying:
 		return
-		
+	if is_hurt:  # NEW: do not override hurt animation
+		return
+
 	if not is_dashing and not is_rolling and not is_attacking:
 		if is_wall_clinging:
 			var wall_normal = get_wall_normal()
@@ -793,33 +794,26 @@ func take_damage(amount: int):
 	sfx_hurt.play()
 	Input.start_joy_vibration(0, 0.5, 0.8, 0.3)
 	health -= amount
-	reset_combo() 
+	reset_combo()
 	health = max(health, 0)
 	health_changed.emit(health, max_health)
-	regen_delay_timer = REGEN_DELAY_TIME
-	
 	regen_delay_timer = REGEN_DELAY_TIME
 	if regen_timer_bar:
 		regen_timer_bar.value = REGEN_DELAY_TIME
 		regen_timer_bar.visible = true
-		
 	if health <= 0:
 		start_death()
 		return
 	hit_stun_timer = hit_stun_time
 	invincible = true
+	is_hurt = true
 	animated_sprite_2d.play("take_damage")
 	velocity.x = -facing_direction * 150
 	if not is_on_floor():
 		velocity.y = 200
 	await get_tree().create_timer(invincibility_time).timeout
 	invincible = false
-
-	if not is_on_floor():
-		velocity.y = 200
-
-	await get_tree().create_timer(invincibility_time).timeout
-	invincible = false
+	# Allow animation to finish before clearing hurt (handled in _on_animation_finished)
 
 func update_combo_display():
 	if not combo_counter:
