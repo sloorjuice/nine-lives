@@ -51,7 +51,7 @@ func _on_all_enemies_dead():
 	var stage = get_tree().current_scene
 	var music_player = stage.get_node_or_null("BGM_Player")
 	if music_player:
-		music_player.stop()
+		music_player.stream_paused = true
 	
 	get_tree().paused = true # Pause the game for the cinematic
 	
@@ -140,7 +140,7 @@ func _finish_cinematic(player_node: Node = null):
 	var stage = get_tree().current_scene
 	var music_player = stage.get_node_or_null("BGM_Player")
 	if music_player:
-		music_player.play()
+		music_player.stream_paused = false
 
 	# Unfreeze player
 	if player_node:

@@ -111,3 +111,4 @@ debug_color = Color(0.73333335, 0.46666667, 0.15294118, 0)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_83dcw")
+bus = &"SFX"

@@ -737,7 +737,7 @@ texture = ExtResource("6_t5w3b")
 
 [node name="BGM_Player" parent="." index="10"]
 stream = ExtResource("8_t5w3b")
-volume_db = -15.0
+volume_db = -26.0
 
 [node name="door" parent="." index="12" instance=ExtResource("8_stvd1")]
 position = Vector2(132, -655)

@@ -428,7 +428,8 @@ script = ExtResource("1_d56fl")
 
 [node name="SFX_Throw" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("2_pyp1f")
-volume_db = -4.831
+volume_db = -10.0
+bus = &"SFX"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
@@ -458,4 +459,5 @@ collision_mask = 2
 
 [node name="SFX_Death" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("15_obgqe")
-volume_db = -5.967
+volume_db = -10.0
+bus = &"SFX"
