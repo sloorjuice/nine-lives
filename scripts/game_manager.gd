@@ -3,7 +3,7 @@ extends Node
 const STARTING_LIVES = 9
 var current_lives := STARTING_LIVES
 var current_slot := 0
-var main_menu_scene_path: String = "res://scenes/main_menu.tscn"
+var main_menu_scene_path: String = "res://scenes/menus/main_menu.tscn"
 
 func _ready():
 	# CRITICAL: Mark as always processing so it never gets unloaded
