@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://clsb8mvacryda" path="res://assets/sprites/cat.png" id="13_3tx44"]
 [ext_resource type="FontFile" uid="uid://baejtw4fvb0a4" path="res://assets/PixelatedEleganceRegular-ovyAA.ttf" id="13_uao63"]
 [ext_resource type="Script" uid="uid://c7wlr6vfpnj6w" path="res://scenes/lives_counter.gd" id="14_0sgdp"]
-[ext_resource type="Script" path="res://scenes/health_bar.gd" id="15_spllb"]
+[ext_resource type="Script" uid="uid://cquo23xyogoao" path="res://scenes/health_bar.gd" id="15_spllb"]
 [ext_resource type="Texture2D" uid="uid://c7dx3v4wukm6n" path="res://assets/sprites/pixil-frame-0.png" id="16_fhs25"]
 [ext_resource type="AudioStream" uid="uid://dbjn0bphy5dgm" path="res://assets/audio/2014 07_ Clement Panchout_ Partycles OST_ Cheerful Title Screen.wav" id="17_3s6nb"]
 [ext_resource type="Shader" uid="uid://dxyuykde6gj8o" path="res://scenes/EnemySenses.gdshader" id="17_oo08v"]
@@ -1605,11 +1605,11 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u7iro"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vrrvx"]
 bg_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8xnx5"]
-bg_color = Color(0.1793114, 0.35420465, 0.4739223, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hn8ly"]
+bg_color = Color(0.20331344, 0.4880604, 0.22384834, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u7iro"]
 shader = ExtResource("17_oo08v")
@@ -1807,9 +1807,9 @@ anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -97.0
-offset_top = 6.0
+offset_top = 7.0
 offset_right = -35.0
-offset_bottom = 37.0
+offset_bottom = 38.0
 grow_horizontal = 0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 10
@@ -1889,13 +1889,13 @@ texture = ExtResource("16_fhs25")
 
 [node name="RegenTimerBar" type="ProgressBar" parent="GUI"]
 offset_left = 133.0
-offset_top = 1.9999998
+offset_top = 2.0
 offset_right = 137.0
 offset_bottom = 29.0
-scale = Vector2(0.5, 0.35)
-theme_override_styles/background = SubResource("StyleBoxFlat_u7iro")
-theme_override_styles/fill = SubResource("StyleBoxFlat_8xnx5")
-max_value = 5.2
+scale = Vector2(0.75, 0.34)
+theme_override_styles/background = SubResource("StyleBoxFlat_vrrvx")
+theme_override_styles/fill = SubResource("StyleBoxFlat_hn8ly")
+max_value = 5.0
 fill_mode = 3
 show_percentage = false
 

@@ -26,6 +26,7 @@ tile_map_data = PackedByteArray("AAAAAAwAAAABAAEAAAABAAsAAAACAAAAAAABAAwAAAACAAE
 [node name="Player" parent="." index="6"]
 death_threshold = 5000.0
 kill_threshold = 5050.0
+death_animation_duration = null
 
 [node name="Camera2D" parent="Player" index="11"]
 limit_bottom = 5000
@@ -44,6 +45,10 @@ texture = ExtResource("5_h8cxe")
 
 [node name="Foreground" parent="Paralx_Background" index="4"]
 texture = ExtResource("6_xpuv5")
+
+[node name="Lives_counter" parent="GUI" index="1"]
+offset_top = 16.0
+offset_bottom = 47.0
 
 [node name="Enemies" type="Node2D" parent="." index="12"]
 

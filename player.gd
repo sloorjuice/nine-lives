@@ -9,12 +9,14 @@ extends CharacterBody2D
 @onready var sfx_hurt: AudioStreamPlayer2D = $SFX_Hurt
 @onready var sfx_death: AudioStreamPlayer2D = $SFX_Death
 @onready var sfx_meow: AudioStreamPlayer2D = $SFX_Meow
-@onready var combo_counter: Label = get_node("/root/Node2D/GUI/ComboCounter")
-@onready var combo_timer_bar: ProgressBar = get_node("/root/Node2D/GUI/ComboTimer")
+
+@onready var combo_counter: Label = $"../GUI/ComboCounter"
+@onready var combo_timer_bar: ProgressBar = $"../GUI/ComboTimer"
+
 @onready var detection_area: Area2D = $DetectionArea
 
 # NEW: Reference to the Regeneration Delay Progress Bar
-@onready var regen_timer_bar: ProgressBar = get_node("/root/Node2D/GUI/RegenTimerBar")
+@onready var regen_timer_bar: ProgressBar = $"../GUI/RegenTimerBar"
 
 # NEW: Preload your meow sounds
 var meow_sounds = [

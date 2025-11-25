@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://vwsq00lpldxc"]
+[gd_scene load_steps=16 format=3 uid="uid://vwsq00lpldxc"]
 
 [ext_resource type="Texture2D" uid="uid://d0r24jhyo303p" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/6/Day/1.png" id="1_rtw2f"]
 [ext_resource type="Script" uid="uid://uq3g2syps8ei" path="res://scenes/main_menu.gd" id="1_tbmy8"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://cpwcsgljybu6h" path="res://assets/sprites/NineLivesTitleCardBlue.png" id="6_lgwnu"]
 [ext_resource type="FontFile" uid="uid://baejtw4fvb0a4" path="res://assets/PixelatedEleganceRegular-ovyAA.ttf" id="7_oa1go"]
 [ext_resource type="AudioStream" uid="uid://bdtyqtsqxmovg" path="res://assets/audio/Clement Panchout _ LJ_Tel_HipHop.wav" id="10_5dd4i"]
+[ext_resource type="Texture2D" uid="uid://clsb8mvacryda" path="res://assets/sprites/cat.png" id="10_lgwnu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbmy8"]
 bg_color = Color(0.4392157, 0.6039216, 0.8156863, 1)
@@ -172,10 +173,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
@@ -197,6 +198,7 @@ layout_mode = 2
 alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 8
 alignment = 1
@@ -223,11 +225,120 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_5dd4i")
 theme_override_styles/focus = SubResource("StyleBoxFlat_lgwnu")
 text = "Quit"
 
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Slot 1 Row" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Slot1DeleteButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2/Slot 1 Row"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "🗑️"
+
+[node name="Slot1Button" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2/Slot 1 Row"]
+custom_minimum_size = Vector2(98, 22)
+layout_mode = 2
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("7_oa1go")
+theme_override_styles/normal = SubResource("StyleBoxFlat_tbmy8")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jk1qb")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5dd4i")
+theme_override_styles/focus = SubResource("StyleBoxFlat_lgwnu")
+text = "Slot1"
+
+[node name="Slot1Icon" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer2/Slot 1 Row"]
+custom_minimum_size = Vector2(22, 0)
+layout_mode = 2
+texture = ExtResource("10_lgwnu")
+stretch_mode = 4
+
+[node name="Slot1Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2/Slot 1 Row"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("7_oa1go")
+text = "data"
+
+[node name="Slot 2 Row" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Slot2DeleteButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2/Slot 2 Row"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "🗑️"
+
+[node name="Slot2Button" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2/Slot 2 Row"]
+custom_minimum_size = Vector2(98, 22)
+layout_mode = 2
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("7_oa1go")
+theme_override_styles/normal = SubResource("StyleBoxFlat_tbmy8")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jk1qb")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5dd4i")
+theme_override_styles/focus = SubResource("StyleBoxFlat_lgwnu")
+text = "slot2"
+
+[node name="Slot2Icon" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer2/Slot 2 Row"]
+custom_minimum_size = Vector2(22, 0)
+layout_mode = 2
+texture = ExtResource("10_lgwnu")
+stretch_mode = 4
+
+[node name="Slot2Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2/Slot 2 Row"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("7_oa1go")
+text = "data"
+
+[node name="Slot 3 Row" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Slot3DeleteButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2/Slot 3 Row"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "🗑️"
+
+[node name="Slot3Button" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2/Slot 3 Row"]
+custom_minimum_size = Vector2(98, 22)
+layout_mode = 2
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("7_oa1go")
+theme_override_styles/normal = SubResource("StyleBoxFlat_tbmy8")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jk1qb")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5dd4i")
+theme_override_styles/focus = SubResource("StyleBoxFlat_lgwnu")
+text = "slot3"
+
+[node name="Slot3Icon" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer2/Slot 3 Row"]
+custom_minimum_size = Vector2(22, 0)
+layout_mode = 2
+texture = ExtResource("10_lgwnu")
+stretch_mode = 4
+
+[node name="Slot3Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2/Slot 3 Row"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("7_oa1go")
+text = "data"
+
+[node name="CancelButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(98, 22)
+layout_mode = 2
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("7_oa1go")
+theme_override_styles/normal = SubResource("StyleBoxFlat_tbmy8")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jk1qb")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5dd4i")
+theme_override_styles/focus = SubResource("StyleBoxFlat_lgwnu")
+text = "Cancel"
+
 [node name="BGMPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_5dd4i")
 volume_db = -12.0
 autoplay = true
 bus = &"Music"
-
-[connection signal="button_up" from="MarginContainer/HBoxContainer/VBoxContainer/PlayButton" to="." method="on_start_up"]
-[connection signal="button_up" from="MarginContainer/HBoxContainer/VBoxContainer/QuitButton" to="." method="on_quit_up"]

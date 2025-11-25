@@ -1,24 +1,73 @@
 extends Node
 
-# Reference to the current scene name for easy resetting
+const STARTING_LIVES = 9
+var current_lives := STARTING_LIVES
+var current_slot := 0
 var main_menu_scene_path: String = "res://scenes/main_menu.tscn"
 
-# --- GLOBAL LIVES SYSTEM ---
-const MAX_LIVES = 9
-var current_lives := MAX_LIVES
-signal global_lives_changed(new_lives: int)
+func _ready():
+	# CRITICAL: Mark as always processing so it never gets unloaded
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	
+	# --- FIX STARTS HERE ---
+	# Check if another GameManager already exists.
+	var existing_gms = get_tree().get_nodes_in_group("game_manager")
+	for gm in existing_gms:
+		# If we find another one that isn't us, it's the old one. Get rid of it.
+		if gm != self:
+			print("[GameManager] Found and removing old GameManager instance.")
+			gm.queue_free()
+	
+	# Now, add this (the new) instance to the group.
+	if not is_in_group("game_manager"):
+		add_to_group("game_manager")
+	# --- FIX ENDS HERE ---
+	
+	print("[GameManager] READY - Initialized with slot: ", current_slot)
 
-# Function to lose a life (called by player when they die)
-func lose_life() -> bool:
-	current_lives -= 1
-	global_lives_changed.emit(current_lives)
-	return current_lives > 0  # Returns true if player still has lives
+func set_slot(slot: int) -> void:
+	print("[GameManager] Setting slot from ", current_slot, " to ", slot)
+	current_slot = slot
+	print("[GameManager] Slot is now: ", current_slot)
 
-# Function to reset lives (e.g., when starting a new game)
-func reset_lives():
-	current_lives = MAX_LIVES
-	global_lives_changed.emit(current_lives)
-
-# Function to get current lives count
 func get_lives() -> int:
 	return current_lives
+
+func reset_lives() -> void:
+	current_lives = STARTING_LIVES
+	print("[GameManager] Lives reset to ", STARTING_LIVES)
+
+# Returns true if player can continue playing, false if game over
+func lose_life() -> bool:
+	current_lives -= 1
+	print("[GameManager] Lost a life. Remaining: ", current_lives)
+	
+	if current_lives < 0:
+		current_lives = 0
+	
+	# Game over when lives reach 0
+	if current_lives <= 0:
+		# Delete the save immediately
+		if current_slot > 0:
+			print("[GameManager] GAME OVER - Deleting save for slot ", current_slot)
+			SaveManager.delete(current_slot)
+		return false
+	
+	# Still have lives - save progress with updated life count
+	if current_slot > 0 and _can_save_current_scene():
+		SaveManager.save(current_slot, get_tree().current_scene.scene_file_path, current_lives)
+	
+	return true
+
+func _can_save_current_scene() -> bool:
+	var sc = get_tree().current_scene
+	if sc == null:
+		return false
+	var path: String = sc.scene_file_path
+	if path.is_empty():
+		return false
+	return path.begins_with("res://scenes/stage_") or path.begins_with("res://scenes/test") or path.begins_with("res://scenes/base_stage")
+
+func _notification(what):
+	if what == NOTIFICATION_CRASH: # Rarely called; fallback: use global script error print
+		print("[GameManager] NOTIFICATION_CRASH")

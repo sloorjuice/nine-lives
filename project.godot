@@ -15,12 +15,14 @@ config/description="In Nine Lives you play as Ellie, a small dark grey  kitty wh
 "
 config/version="0.1.0"
 run/main_scene="uid://vwsq00lpldxc"
+config/custom_user_dir_name="NineLivesData"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="uid://lwp8rpk5b746"
 
 [autoload]
 
 GameManager="*res://scripts/game_manager.gd"
+SaveManager="*res://scripts/save_manager.gd"
 
 [display]
 

@@ -12,6 +12,7 @@ var player_can_interact: bool = false
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	audio_stream_player_2d.process_mode = Node.PROCESS_MODE_ALWAYS
 	
 	var counter_node = get_tree().get_first_node_in_group("enemy_counter")
 	if counter_node:
@@ -45,6 +46,14 @@ func _on_all_enemies_dead():
 	if not player_node:
 		_finish_cinematic()
 		return
+	
+	# Stop the music for cinematic
+	var stage = get_tree().current_scene
+	var music_player = stage.get_node_or_null("BGM_Player")
+	if music_player:
+		music_player.stop()
+	
+	get_tree().paused = true # Pause the game for the cinematic
 	
 	await get_tree().create_timer(0.3, true, false, true).timeout
 	
@@ -114,10 +123,10 @@ func _finish_cinematic(player_node: Node = null):
 	interaction_shape.set_deferred("disabled", false)
 
 	# Wait for physics to register the enabled shape (Godot quirk)
-	await get_tree().physics_frame  # Or process_frame if picky
+	await get_tree().physics_frame
 
-	# Manually detect current overlaps (fixes enable-no-signal bug)
-	player_can_interact = false  # Reset first
+	# Manually detect current overlaps
+	player_can_interact = false
 	var overlapping_bodies = get_overlapping_bodies()
 	for body in overlapping_bodies:
 		if body.is_in_group("player"):
@@ -126,6 +135,12 @@ func _finish_cinematic(player_node: Node = null):
 
 	# Unpause the game
 	get_tree().paused = false
+	
+	# Resume the music after cinematic
+	var stage = get_tree().current_scene
+	var music_player = stage.get_node_or_null("BGM_Player")
+	if music_player:
+		music_player.play()
 
 	# Unfreeze player
 	if player_node:
@@ -151,4 +166,8 @@ func _on_body_exited(body: Node2D):
 
 func go_to_next_level():
 	print("DOOR: Changing scene to %s" % NEXT_SCENE_PATH)
+	# Save progress before changing scenes
+	var stage = get_tree().current_scene
+	if stage.has_method("save_current_progress"):
+		stage.save_current_progress()
 	get_tree().change_scene_to_file(NEXT_SCENE_PATH)
