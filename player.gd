@@ -136,12 +136,18 @@ func _ready():
 		regen_timer_bar.visible = false
 
 func _input(event: InputEvent) -> void:
+	if get_tree().paused and not event.is_action_pressed("pause"):
+		return
+	
 	if event is InputEventJoypadButton or event is InputEventJoypadMotion:
 		input_type = InputType.CONTROLLER
 	elif event is InputEventKey or event is InputEventMouseButton or event is InputEventMouseMotion:
 		input_type = InputType.KEYBOARD_MOUSE
 
 func _physics_process(delta: float) -> void:
+	if get_tree().paused:
+		return
+	
 	if Input.is_action_just_pressed("meow"):
 		play_random_meow()
 		

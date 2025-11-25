@@ -1,0 +1,138 @@
+[gd_scene load_steps=7 format=3 uid="uid://bdnb2p0ifs2d4"]
+
+[ext_resource type="Texture2D" uid="uid://b3yexhfqtukr" path="res://assets/sprites/pause-logo.png" id="1_myx47"]
+[ext_resource type="FontFile" uid="uid://baejtw4fvb0a4" path="res://assets/PixelatedEleganceRegular-ovyAA.ttf" id="2_kukqi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5d2l8"]
+bg_color = Color(0.4392157, 0.6039216, 0.8156863, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7l7mv"]
+bg_color = Color(0.3019608, 0.42745098, 0.9529412, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v4r4p"]
+bg_color = Color(0.6, 0.8509804, 0.91764706, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1s2dm"]
+bg_color = Color(0.6, 0.8509804, 0.91764706, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="PauseMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 15
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(172.3, 66.73)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture = ExtResource("1_myx47")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="ResumeButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(120, 22)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("2_kukqi")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5d2l8")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_7l7mv")
+theme_override_styles/hover = SubResource("StyleBoxFlat_v4r4p")
+theme_override_styles/focus = SubResource("StyleBoxFlat_1s2dm")
+text = "Resume"
+
+[node name="SettingsButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(120, 22)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("2_kukqi")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5d2l8")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_7l7mv")
+theme_override_styles/hover = SubResource("StyleBoxFlat_v4r4p")
+theme_override_styles/focus = SubResource("StyleBoxFlat_1s2dm")
+text = "Settings"
+
+[node name="ReturnButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(127.3, 40.56)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("2_kukqi")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5d2l8")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_7l7mv")
+theme_override_styles/hover = SubResource("StyleBoxFlat_v4r4p")
+theme_override_styles/focus = SubResource("StyleBoxFlat_1s2dm")
+text = "Return to
+Main Menu"

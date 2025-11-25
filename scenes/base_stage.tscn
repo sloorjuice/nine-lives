@@ -1,5 +1,6 @@
-[gd_scene load_steps=34 format=3 uid="uid://br6i2k1msdnj6"]
+[gd_scene load_steps=41 format=3 uid="uid://br6i2k1msdnj6"]
 
+[ext_resource type="Script" uid="uid://153y6mid2wof" path="res://scenes/base_stage.gd" id="1_b8a8s"]
 [ext_resource type="Texture2D" uid="uid://beljhqiu01tyw" path="res://assets/sprites/Tiles/Assets/Assets.png" id="1_u7iro"]
 [ext_resource type="PackedScene" uid="uid://mcs3gat6hnxr" path="res://player.tscn" id="2_8xnx5"]
 [ext_resource type="Script" uid="uid://djxnt4s8ndtx6" path="res://scripts/spawpoint.gd" id="3_b8a8s"]
@@ -18,6 +19,8 @@
 [ext_resource type="AudioStream" uid="uid://dbjn0bphy5dgm" path="res://assets/audio/2014 07_ Clement Panchout_ Partycles OST_ Cheerful Title Screen.wav" id="17_3s6nb"]
 [ext_resource type="Shader" uid="uid://dxyuykde6gj8o" path="res://scenes/EnemySenses.gdshader" id="17_oo08v"]
 [ext_resource type="Script" uid="uid://b1j6nw2hqx1ts" path="res://scenes/enemy_senses.gd" id="18_u7iro"]
+[ext_resource type="Texture2D" uid="uid://b3yexhfqtukr" path="res://assets/sprites/pause-logo.png" id="19_8xnx5"]
+[ext_resource type="Script" uid="uid://cnrphvltw8uq4" path="res://scenes/pause_menu.gd" id="20_qgydc"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u7iro"]
 texture = ExtResource("1_u7iro")
@@ -1619,7 +1622,55 @@ shader_parameter/enemy_count = 0
 shader_parameter/enemy_angles = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 shader_parameter/enemy_intensities = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5i62e"]
+bg_color = Color(0.4392157, 0.6039216, 0.8156863, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fgo5f"]
+bg_color = Color(0.3019608, 0.42745098, 0.9529412, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lhr0g"]
+bg_color = Color(0.6, 0.8509804, 0.91764706, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_afnu3"]
+bg_color = Color(0.6, 0.8509804, 0.91764706, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
 [node name="Node2D" type="Node2D"]
+script = ExtResource("1_b8a8s")
 
 [node name="background" type="TileMapLayer" parent="."]
 z_index = -5
@@ -1852,6 +1903,7 @@ show_percentage = false
 stream = ExtResource("17_3s6nb")
 volume_db = -25.0
 autoplay = true
+bus = &"Music"
 
 [node name="EdgeIndicators" type="CanvasLayer" parent="."]
 layer = 10
@@ -1867,3 +1919,100 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(1, 0, 0, 1)
 script = ExtResource("18_u7iro")
+
+[node name="PauseMenu" type="CanvasLayer" parent="."]
+visible = false
+script = ExtResource("20_qgydc")
+
+[node name="ColorRect" type="ColorRect" parent="PauseMenu"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.15294118)
+
+[node name="MarginContainer" type="MarginContainer" parent="PauseMenu"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 48
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 48
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/separation = 15
+
+[node name="TextureRect" type="TextureRect" parent="PauseMenu/MarginContainer/VBoxContainer"]
+texture_filter = 1
+custom_minimum_size = Vector2(172.3, 66.73)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("19_8xnx5")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PauseMenu/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="ResumeButton" type="Button" parent="PauseMenu/MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(120, 22)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("13_uao63")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5i62e")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fgo5f")
+theme_override_styles/hover = SubResource("StyleBoxFlat_lhr0g")
+theme_override_styles/focus = SubResource("StyleBoxFlat_afnu3")
+text = "Resume"
+
+[node name="RestartButton" type="Button" parent="PauseMenu/MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(120, 22)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("13_uao63")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5i62e")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fgo5f")
+theme_override_styles/hover = SubResource("StyleBoxFlat_lhr0g")
+theme_override_styles/focus = SubResource("StyleBoxFlat_afnu3")
+text = "Restart"
+
+[node name="ReturnButton" type="Button" parent="PauseMenu/MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(127.3, 40.56)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("13_uao63")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5i62e")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fgo5f")
+theme_override_styles/hover = SubResource("StyleBoxFlat_lhr0g")
+theme_override_styles/focus = SubResource("StyleBoxFlat_afnu3")
+text = "Return to
+Main Menu"
+
+[connection signal="button_up" from="PauseMenu/MarginContainer/HBoxContainer/VBoxContainer/ResumeButton" to="PauseMenu" method="on_resume_up"]
+[connection signal="button_up" from="PauseMenu/MarginContainer/HBoxContainer/VBoxContainer/RestartButton" to="PauseMenu" method="on_restart_up"]
+[connection signal="button_up" from="PauseMenu/MarginContainer/HBoxContainer/VBoxContainer/ReturnButton" to="PauseMenu" method="on_return_up"]
