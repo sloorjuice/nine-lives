@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=4 uid="uid://bemgvybaqp2t"]
 
-[ext_resource type="PackedScene" uid="uid://br6i2k1msdnj6" path="res://scenes/Stages/base_stage.tscn" id="1_nhgba"]
+[ext_resource type="PackedScene" uid="uid://br6i2k1msdnj6" path="res://scenes/stages/base_stage.tscn" id="1_nhgba"]
 [ext_resource type="Texture2D" uid="uid://beljhqiu01tyw" path="res://assets/sprites/Tiles/Assets/Assets.png" id="2_cam3v"]
 [ext_resource type="Texture2D" uid="uid://bllq3ea822j6r" path="res://assets/sprites/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/7/Day/1.png" id="2_vlpry"]
 [ext_resource type="Texture2D" uid="uid://ccq1te6stnxbn" path="res://assets/sprites/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/7/Day/2.png" id="3_cam3v"]
@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://b6pot8pwccvhu" path="res://assets/sprites/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/7/Day/5.png" id="6_t5w3b"]
 [ext_resource type="PackedScene" uid="uid://blm8et2c720tm" path="res://scenes/door.tscn" id="8_stvd1"]
 [ext_resource type="AudioStream" uid="uid://csv3db7x3ca7i" path="res://assets/audio/Music/Clement Panchout_ Best Party Ever _ 2019.wav" id="8_t5w3b"]
-[ext_resource type="PackedScene" uid="uid://wa1x54yxvxmo" path="res://scenes/Entities/monster.tscn" id="9_t5w3b"]
+[ext_resource type="PackedScene" uid="uid://wa1x54yxvxmo" path="res://scenes/entities/monster.tscn" id="9_t5w3b"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ideql"]
 texture = ExtResource("2_cam3v")

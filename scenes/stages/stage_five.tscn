@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=4 uid="uid://bspdrlq5wvk3m"]
 
-[ext_resource type="PackedScene" uid="uid://br6i2k1msdnj6" path="res://scenes/Stages/base_stage.tscn" id="1_a3qwd"]
+[ext_resource type="PackedScene" uid="uid://br6i2k1msdnj6" path="res://scenes/stages/base_stage.tscn" id="1_a3qwd"]
 [ext_resource type="Texture2D" uid="uid://beljhqiu01tyw" path="res://assets/sprites/Tiles/Assets/Assets.png" id="2_jex81"]
-[ext_resource type="PackedScene" uid="uid://detynhaayvji4" path="res://scenes/Entities/skeleton.tscn" id="3_ndw6a"]
-[ext_resource type="PackedScene" uid="uid://wa1x54yxvxmo" path="res://scenes/Entities/monster.tscn" id="4_k6wv1"]
+[ext_resource type="PackedScene" uid="uid://detynhaayvji4" path="res://scenes/entities/skeleton.tscn" id="3_ndw6a"]
+[ext_resource type="PackedScene" uid="uid://wa1x54yxvxmo" path="res://scenes/entities/monster.tscn" id="4_k6wv1"]
 [ext_resource type="PackedScene" uid="uid://blm8et2c720tm" path="res://scenes/door.tscn" id="5_u3aqr"]
 [ext_resource type="AudioStream" uid="uid://cvs00djyeevr" path="res://assets/audio/Music/Clement Panchout _ Revenge.wav" id="6_jex81"]
 

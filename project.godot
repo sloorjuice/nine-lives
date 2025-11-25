@@ -13,7 +13,7 @@ config_version=5
 config/name="Nine Lives"
 config/description="In Nine Lives you play as Ellie, a small dark grey  kitty who is tasked with ridding Kitty City of the Skeletons and Monsters trying to overthrow it for the local oil, and he only has 9 lives to do it .s
 "
-config/version="0.1.0"
+config/version="0.2.3"
 run/main_scene="uid://vwsq00lpldxc"
 config/custom_user_dir_name="NineLivesData"
 config/features=PackedStringArray("4.5", "Forward Plus")

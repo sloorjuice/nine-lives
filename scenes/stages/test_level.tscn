@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://b7kxilxk674oq" path="res://assets/sprites/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/1/Night/3.png" id="6_4asn1"]
 [ext_resource type="Texture2D" uid="uid://ci1m7vm56w5xp" path="res://assets/sprites/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/1/Night/4.png" id="7_dw7u0"]
 [ext_resource type="Texture2D" uid="uid://c58jkqjn6lxki" path="res://assets/sprites/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/1/Night/5.png" id="8_fyxdr"]
-[ext_resource type="PackedScene" uid="uid://detynhaayvji4" path="res://scenes/Entities/skeleton.tscn" id="10_4asn1"]
+[ext_resource type="PackedScene" uid="uid://detynhaayvji4" path="res://scenes/entities/skeleton.tscn" id="10_4asn1"]
 [ext_resource type="FontFile" uid="uid://baejtw4fvb0a4" path="res://assets/PixelatedEleganceRegular-ovyAA.ttf" id="11_dw7u0"]
 [ext_resource type="Script" uid="uid://dvk2fyj1hn5j6" path="res://scripts/skeleton_counter.gd" id="11_fyxdr"]
 [ext_resource type="Script" uid="uid://c7wlr6vfpnj6w" path="res://scripts/lives_counter.gd" id="13_kpk0m"]
@@ -18,7 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://c7dx3v4wukm6n" path="res://assets/sprites/SkeletonIcon.png" id="15_fptmo"]
 [ext_resource type="PackedScene" uid="uid://blm8et2c720tm" path="res://scenes/door.tscn" id="16_fptmo"]
 [ext_resource type="Texture2D" uid="uid://clsb8mvacryda" path="res://assets/sprites/CatIcon.png" id="17_ni2ok"]
-[ext_resource type="PackedScene" uid="uid://wa1x54yxvxmo" path="res://scenes/Entities/monster.tscn" id="18_jqmoj"]
+[ext_resource type="PackedScene" uid="uid://wa1x54yxvxmo" path="res://scenes/entities/monster.tscn" id="18_jqmoj"]
 [ext_resource type="Shader" uid="uid://dxyuykde6gj8o" path="res://scripts/EnemySenses.gdshader" id="20_rv6en"]
 [ext_resource type="Script" uid="uid://b1j6nw2hqx1ts" path="res://scripts/enemy_senses.gd" id="21_tugu3"]
 

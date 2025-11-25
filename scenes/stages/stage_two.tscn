@@ -1,13 +1,13 @@
 [gd_scene load_steps=10 format=4 uid="uid://cj0hkdi2bhdi4"]
 
-[ext_resource type="PackedScene" uid="uid://br6i2k1msdnj6" path="res://scenes/Stages/base_stage.tscn" id="1_4bw5f"]
+[ext_resource type="PackedScene" uid="uid://br6i2k1msdnj6" path="res://scenes/stages/base_stage.tscn" id="1_4bw5f"]
 [ext_resource type="Texture2D" uid="uid://tf2hp0071hbk" path="res://assets/sprites/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/5/Night/1.png" id="2_io2s4"]
 [ext_resource type="Texture2D" uid="uid://e7tneuq7luxp" path="res://assets/sprites/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/5/Night/2.png" id="3_qydnw"]
 [ext_resource type="Texture2D" uid="uid://cwwihdbjntokf" path="res://assets/sprites/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/5/Night/3.png" id="4_g2mlr"]
 [ext_resource type="Texture2D" uid="uid://11s23qvtler7" path="res://assets/sprites/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/5/Night/4.png" id="5_h8cxe"]
 [ext_resource type="Texture2D" uid="uid://dhtjuuupe4twv" path="res://assets/sprites/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/5/Night/5.png" id="6_xpuv5"]
 [ext_resource type="AudioStream" uid="uid://ctddi10cdcod1" path="res://assets/audio/Music/Clement Panchout _ 80s Zombies Movie _ 2018.wav" id="7_g2mlr"]
-[ext_resource type="PackedScene" uid="uid://detynhaayvji4" path="res://scenes/Entities/skeleton.tscn" id="7_io2s4"]
+[ext_resource type="PackedScene" uid="uid://detynhaayvji4" path="res://scenes/entities/skeleton.tscn" id="7_io2s4"]
 [ext_resource type="PackedScene" uid="uid://blm8et2c720tm" path="res://scenes/door.tscn" id="8_qydnw"]
 
 [node name="Node2D" instance=ExtResource("1_4bw5f")]
