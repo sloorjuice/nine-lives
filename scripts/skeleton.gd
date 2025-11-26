@@ -8,6 +8,7 @@ extends CharacterBody2D
 @onready var edge_detector: RayCast2D = $EdgeDetector
 @onready var sfx_death: AudioStreamPlayer2D = $SFX_Death
 @onready var sfx_throw: AudioStreamPlayer2D = $SFX_Throw
+@onready var bone_drop_area: Area2D = $BoneDropArea
 
 const BONE_PROJECTILE = preload("res://scenes/entities/bone.tscn") 
 
@@ -30,6 +31,8 @@ func _ready():
 	add_to_group("enemies")
 	collision_shape_2d_top.disabled = false
 	collision_shape_2d_bottom.disabled = false
+	bone_drop_area.monitoring = false
+	bone_drop_area.body_entered.connect(_on_bone_drop_area_entered)
 	
 	animated_sprite_2d.play("bone_pile")
 	attack_timer.wait_time = ATTACK_COOLDOWN
@@ -194,12 +197,22 @@ func die():
 	set_physics_process(false)
 	sfx_death.play()
 	animated_sprite_2d.play("crumbling_into_bone_pile")
+	var gm = get_node("/root/GameManager")
+	gm.add_current_bones(2)
+	
 	await animated_sprite_2d.animation_finished
-	await get_tree().create_timer(0.8).timeout
 	queue_free()
+	# Enable bone drop area to drop bones for the player
+	#bone_drop_area.monitoring = true
 
 func _on_detection_area_entered(body):
 	if body.name == "Player" or body.is_in_group("player"):
 		player = body
 		if current_state == State.BONE_PILE:
 			wake_up()
+
+func _on_bone_drop_area_entered(body):
+	if body.is_in_group("player"):
+		var gm = get_node("/root/GameManager")
+		gm.add_current_bones(2)
+		queue_free()

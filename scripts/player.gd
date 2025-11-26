@@ -673,7 +673,8 @@ func check_hitbox_collision(anim_type):
 	for area in areas:
 		if area.is_in_group("bone"):  # Or check area.name.contains("bone")
 			area.queue_free()  # Destroy the bone
-			# Optionally increment combo
+			var gm = get_node("/root/GameManager")
+			gm.add_current_bones(1)  # Add 1 bone to the count
 			combo_count += 1
 			combo_timer = COMBO_TIMEOUT
 			update_combo_display()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=3 uid="uid://detynhaayvji4"]
+[gd_scene load_steps=67 format=3 uid="uid://detynhaayvji4"]
 
 [ext_resource type="Script" uid="uid://b43avo63tqdlu" path="res://scripts/skeleton.gd" id="1_d56fl"]
 [ext_resource type="Texture2D" uid="uid://brc8opc3xtur4" path="res://assets/sprites/Sprite Pack 6/3 - Skeleton/Bone_Pile (32 x 32).png" id="1_sh88d"]
@@ -421,6 +421,9 @@ size = Vector2(9, 16)
 [sub_resource type="CircleShape2D" id="CircleShape2D_sh88d"]
 radius = 155.00322
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_aixiy"]
+radius = 19.026299
+
 [node name="skeleton" type="CharacterBody2D"]
 z_index = 25
 collision_layer = 4
@@ -435,7 +438,7 @@ bus = &"SFX"
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_rie6r")
-animation = &"bone_pile"
+animation = &"crumbling_into_bone_pile"
 
 [node name="CollisionShape2D Top" type="CollisionShape2D" parent="."]
 position = Vector2(2, -2)
@@ -462,3 +465,9 @@ collision_mask = 2
 stream = ExtResource("15_obgqe")
 volume_db = -10.0
 bus = &"SFX"
+
+[node name="BoneDropArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BoneDropArea"]
+position = Vector2(0, 13)
+shape = SubResource("CircleShape2D_aixiy")

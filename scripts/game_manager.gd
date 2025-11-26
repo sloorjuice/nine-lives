@@ -1,13 +1,19 @@
 extends Node
 
 signal current_yarn_changed(new_amount: int)
+signal current_monster_bits_changed(new_amount: int)
+signal current_bones_changed(new_amount: int)
 signal slot_changed(slot: int)
 
 const STARTING_LIVES = 9
 var current_lives := STARTING_LIVES
 var current_yarn := 0
+var current_bones := 0
+var current_monster_bits := 0
 var current_slot := 0
 var main_menu_scene_path: String = "res://scenes/menus/main_menu.tscn"
+
+
 
 func _ready():
 	# CRITICAL: Mark as always processing so it never gets unloaded
@@ -40,6 +46,30 @@ func add_current_yarn(amount: int) -> void:
 
 func get_current_yarn() -> int:
 	return current_yarn
+
+func reset_current_monster_bits() -> void:
+	current_monster_bits = 0
+	current_monster_bits_changed.emit(current_monster_bits)
+	print("[GameManager] Session monster bits reset to 0.")
+
+func add_current_monster_bits(amount: int) -> void:
+	current_monster_bits += max(0, amount)
+	current_monster_bits_changed.emit(current_monster_bits)
+
+func get_current_monster_bits() -> int:
+	return current_monster_bits
+
+func reset_current_bones() -> void:
+	current_bones = 0
+	current_bones_changed.emit(current_bones)
+	print("[GameManager] Session bones reset to 0.")
+
+func add_current_bones(amount: int) -> void:
+	current_bones += max(0, amount)
+	current_bones_changed.emit(current_bones)
+
+func get_current_bones() -> int:
+	return current_bones
 
 func set_slot(slot: int) -> void:
 	print("[GameManager] Setting slot from ", current_slot, " to ", slot)

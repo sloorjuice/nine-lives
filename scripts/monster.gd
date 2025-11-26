@@ -263,6 +263,8 @@ func die():
 	sfx_die.play()
 	collision_shape_2d.set_deferred("disabled", true)
 	set_physics_process(false)
+	var gm = get_node("/root/GameManager")
+	gm.add_current_monster_bits(2)
 	play_anim("die")
 	await animated_sprite_2d.animation_finished
 	queue_free()
