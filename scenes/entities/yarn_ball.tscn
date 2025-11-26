@@ -1,0 +1,140 @@
+[gd_scene load_steps=21 format=3 uid="uid://xj3f48apa15s"]
+
+[ext_resource type="Script" uid="uid://kj5gsh8t5agr" path="res://scripts/yarn_ball.gd" id="1_xy2n8"]
+[ext_resource type="Texture2D" uid="uid://di7r8q63jevbo" path="res://assets/sprites/yarn-Sheet.png" id="2_qloyo"]
+[ext_resource type="AudioStream" uid="uid://ck8ju0v72rsji" path="res://assets/audio/SFX/player/pickup.wav" id="3_qloyo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_62moc"]
+atlas = ExtResource("2_qloyo")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7cl3d"]
+atlas = ExtResource("2_qloyo")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rolrd"]
+atlas = ExtResource("2_qloyo")
+region = Rect2(32, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ujot"]
+atlas = ExtResource("2_qloyo")
+region = Rect2(48, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u3vgj"]
+atlas = ExtResource("2_qloyo")
+region = Rect2(64, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ljruk"]
+atlas = ExtResource("2_qloyo")
+region = Rect2(80, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l8thp"]
+atlas = ExtResource("2_qloyo")
+region = Rect2(96, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_swwqb"]
+atlas = ExtResource("2_qloyo")
+region = Rect2(112, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e37xc"]
+atlas = ExtResource("2_qloyo")
+region = Rect2(128, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tbaor"]
+atlas = ExtResource("2_qloyo")
+region = Rect2(144, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rjywx"]
+atlas = ExtResource("2_qloyo")
+region = Rect2(160, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lee7n"]
+atlas = ExtResource("2_qloyo")
+region = Rect2(176, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_heckh"]
+atlas = ExtResource("2_qloyo")
+region = Rect2(192, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7k3mx"]
+atlas = ExtResource("2_qloyo")
+region = Rect2(208, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_exsa2"]
+atlas = ExtResource("2_qloyo")
+region = Rect2(224, 0, 16, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xy2n8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_62moc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7cl3d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rolrd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ujot")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u3vgj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ljruk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l8thp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_swwqb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e37xc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tbaor")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rjywx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lee7n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_heckh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7k3mx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_exsa2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qloyo"]
+
+[node name="YarnBall" type="Area2D"]
+z_index = -1
+collision_layer = 8
+script = ExtResource("1_xy2n8")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_xy2n8")
+autoplay = "default"
+frame_progress = 0.8244076
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_qloyo")
+volume_db = -10.0
+max_polyphony = 50
+bus = &"SFX"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 5)
+shape = SubResource("CircleShape2D_qloyo")

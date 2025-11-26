@@ -1,7 +1,11 @@
 extends Node
 
+signal current_yarn_changed(new_amount: int)
+signal slot_changed(slot: int)
+
 const STARTING_LIVES = 9
 var current_lives := STARTING_LIVES
+var current_yarn := 0
 var current_slot := 0
 var main_menu_scene_path: String = "res://scenes/menus/main_menu.tscn"
 
@@ -25,9 +29,22 @@ func _ready():
 	
 	print("[GameManager] READY - Initialized with slot: ", current_slot)
 
+func reset_current_yarn() -> void:
+	current_yarn = 0
+	current_yarn_changed.emit(current_yarn)
+	print("[GameManager] Session yarn reset to 0.")
+
+func add_current_yarn(amount: int) -> void:
+	current_yarn += max(0, amount)
+	current_yarn_changed.emit(current_yarn)
+
+func get_current_yarn() -> int:
+	return current_yarn
+
 func set_slot(slot: int) -> void:
 	print("[GameManager] Setting slot from ", current_slot, " to ", slot)
 	current_slot = slot
+	slot_changed.emit(current_slot)
 	print("[GameManager] Slot is now: ", current_slot)
 
 func get_lives() -> int:
@@ -41,22 +58,19 @@ func reset_lives() -> void:
 func lose_life() -> bool:
 	current_lives -= 1
 	print("[GameManager] Lost a life. Remaining: ", current_lives)
-	
+
 	if current_lives < 0:
 		current_lives = 0
-	
-	# Game over when lives reach 0
+
 	if current_lives <= 0:
-		# Delete the save immediately
 		if current_slot > 0:
 			print("[GameManager] GAME OVER - Deleting save for slot ", current_slot)
 			SaveManager.delete(current_slot)
 		return false
-	
-	# Still have lives - save progress with updated life count
+
 	if current_slot > 0 and _can_save_current_scene():
 		SaveManager.save(current_slot, get_tree().current_scene.scene_file_path, current_lives)
-	
+
 	return true
 
 func _can_save_current_scene() -> bool:

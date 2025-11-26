@@ -43,6 +43,8 @@ func _ready():
 		push_error("[BaseStage] No player found!")
 		return
 	
+	GameManager.reset_current_yarn()
+
 	print("[BaseStage] _ready() finished")
 	
 	# THE FIX: Don't use await in _ready(), use call_deferred instead

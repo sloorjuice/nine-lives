@@ -12,6 +12,7 @@ extends CharacterBody2D
 
 @onready var combo_counter: Label = $"../GUI/ComboCounter"
 @onready var combo_timer_bar: ProgressBar = $"../GUI/ComboTimer"
+@onready var dash_cooldown_bar: ProgressBar = $"../GUI/DashCooldownBar"
 
 @onready var detection_area: Area2D = $DetectionArea
 
@@ -117,6 +118,7 @@ func _ready():
 	spawn_point = get_tree().get_first_node_in_group("spawn_point")
 	if spawn_point:
 		global_position = spawn_point.global_position
+
 	animated_sprite_2d.animation_finished.connect(_on_animation_finished)
 	hitbox.body_entered.connect(_on_hitbox_body_entered)
 
@@ -127,7 +129,9 @@ func _ready():
 	lives_changed.emit(game_manager.get_lives())
 	was_on_floor = is_on_floor()
 	
-	combo_counter.visible = false
+	# Change these from false to true if you want them always showing:
+	combo_counter.visible = false  # Changed from false
+	combo_timer_bar.visible = false # Changed from false
 	
 	combo_timer_bar.max_value = COMBO_TIMEOUT
 	combo_timer_bar.visible = false
@@ -275,8 +279,19 @@ func _physics_process(delta: float) -> void:
 	else:
 		coyote_timer -= delta
 	
-	if jump_buffer_timer > 0: jump_buffer_timer -= delta
-	if dash_cooldown_timer > 0: dash_cooldown_timer -= delta
+	if jump_buffer_timer > 0: 
+		jump_buffer_timer -= delta
+	if dash_cooldown_timer > 0: 
+		dash_cooldown_timer -= delta
+		if dash_cooldown_bar:
+			dash_cooldown_bar.max_value = DASH_COOLDOWN
+			dash_cooldown_bar.value = dash_cooldown_timer  # Changed: now shows remaining time
+			if not dash_cooldown_bar.visible:
+				dash_cooldown_bar.visible = true
+	else:
+		# Hide the bar when dash is ready
+		if dash_cooldown_bar and dash_cooldown_bar.visible:
+			dash_cooldown_bar.visible = false
 	if dash_timer > 0:
 		dash_timer -= delta
 		if dash_timer <= 0: 
@@ -691,6 +706,7 @@ func _on_animation_finished():
 
 func respawn():
 	if is_game_over:
+		lives_changed.emit(get_node("/root/GameManager").get_lives())
 		return
 	
 	# Use GameManager's global lives system
@@ -701,8 +717,10 @@ func respawn():
 	if not has_lives_remaining:
 		is_game_over = true
 		velocity = Vector2.ZERO
-		await get_tree().create_timer(2.0).timeout
-		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+		var timer = get_tree().create_timer(2.0)
+		timer.pause_mode = Node.PROCESS_MODE_WHEN_PAUSED
+		await timer.timeout
+		get_tree().change_scene_to_file("res://scenes/menus/main_menu.tscn")
 		return
 	
 	is_dying = false

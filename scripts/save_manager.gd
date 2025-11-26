@@ -1,5 +1,7 @@
 extends Node
 
+signal yarn_total_changed(slot: int, total: int)
+
 const SAVE_FILE_PATH = "user://global_save_data.save"
 
 # Helper to load the master dictionary from the single file
@@ -37,9 +39,45 @@ func save(slot: int, stage: String, lives: int) -> void:
 		push_error("[SaveManager] Reject save: invalid slot " + str(slot))
 		return
 	var all_data = _load_all_data()
-	all_data[slot] = {"stage": stage, "lives": lives}
+	var slot_data: Dictionary = all_data.get(slot, {})
+	# Preserve exsting yarn_count if present
+	var yarn_count: int = slot_data.get("yarn_count", 0) 
+	all_data[slot] = {"stage": stage, "lives": lives, "yarn_count": yarn_count}
 	_save_all_data(all_data)
-	print("[SaveManager] Saved slot %d -> %s | lives=%d" % [slot, stage, lives])
+	print("[SaveManager] Saved slot %d -> %s | lives=%d | yarn=%d" % [slot, stage, lives, yarn_count])
+
+func get_yarn_count(slot: int) -> int:
+	var all_data = _load_all_data()
+	if all_data.has(slot):
+		return int(all_data[slot].get("yarn_count", 0))
+	return 0
+
+func set_yarn_count(slot: int, count: int) -> void:
+	if slot < 1 or slot > 3:
+		push_error("[SaveManager] set_yarn_count: invalid slot " + str(slot))
+		return
+	var all_data = _load_all_data()
+	var slot_data: Dictionary = all_data.get(slot, {})
+	slot_data["yarn_count"] = max(0, count)
+	all_data[slot] = slot_data
+	_save_all_data(all_data)
+	print("[SaveManager] Set yarn_count for slot %d to %d" % [slot, count])
+	yarn_total_changed.emit(slot, slot_data["yarn_count"])
+
+func add_yarn(slot: int, amount: int = 1) -> int:
+	if slot < 1 or slot > 3:
+		push_error("[SaveManager] add_yarn: invalid slot " + str(slot))
+		return 0
+	var all_data = _load_all_data()
+	var slot_data: Dictionary = all_data.get(slot, {})
+	var current = int(slot_data.get("yarn_count", 0))
+	current += max(0, amount)
+	slot_data["yarn_count"] = current
+	all_data[slot] = slot_data
+	_save_all_data(all_data)
+	print("[SaveManager] Slot %d yarn_count += %d -> %d" % [slot, amount, current])
+	yarn_total_changed.emit(slot, current)
+	return current
 
 func load(slot: int) -> Dictionary:
 	var all_data = _load_all_data()

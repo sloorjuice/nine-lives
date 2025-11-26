@@ -96,6 +96,7 @@ func _on_all_enemies_dead():
 	
 	# Open door with shake
 	player_collision_shape.set_deferred("disabled", true)
+	Input.start_joy_vibration(0, 1.0, 1.0, 1.0)
 	animated_sprite_2d.play("opening")
 	audio_stream_player_2d.play()
 	
@@ -173,7 +174,16 @@ func _on_body_exited(body: Node2D):
 
 func go_to_next_level():
 	print("DOOR: Changing scene to %s" % NEXT_SCENE_PATH)
-	# Save progress before changing scenes
+	# Persist yarn only on level completion
+	var gm = get_node("/root/GameManager")
+	var slot = gm.current_slot
+	var session_amount = gm.get_current_yarn()
+	if slot > 0 and session_amount > 0:
+		var committed = SaveManager.add_yarn(slot, session_amount)
+		print("[Door] Committed current yarn=%d -> slot total=%d" % [session_amount, committed])
+		gm.reset_current_yarn()
+	
+	# Save progress before changing scenes (stage path + lives)
 	var stage = get_tree().current_scene
 	if stage.has_method("save_current_progress"):
 		stage.save_current_progress()

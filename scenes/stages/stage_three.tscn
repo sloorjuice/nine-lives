@@ -742,6 +742,7 @@ volume_db = -26.0
 [node name="door" parent="." index="12" instance=ExtResource("8_stvd1")]
 position = Vector2(132, -655)
 NEXT_SCENE_PATH = "res://scenes/stages/stage_five.tscn"
+REQUIRED_MONSTER_KILLS = 2
 
 [node name="monster" parent="." index="13" instance=ExtResource("9_t5w3b")]
 position = Vector2(167, -9)

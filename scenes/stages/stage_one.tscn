@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://bmjwvcn8644gi"]
+[gd_scene load_steps=13 format=4 uid="uid://bmjwvcn8644gi"]
 
 [ext_resource type="PackedScene" uid="uid://br6i2k1msdnj6" path="res://scenes/stages/base_stage.tscn" id="1_sbgwt"]
 [ext_resource type="Texture2D" uid="uid://f1y7vw5sbxib" path="res://assets/sprites/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/8/Day/1.png" id="2_okbnv"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://detynhaayvji4" path="res://scenes/entities/skeleton.tscn" id="7_okbnv"]
 [ext_resource type="PackedScene" uid="uid://blm8et2c720tm" path="res://scenes/door.tscn" id="8_8ob5a"]
 [ext_resource type="AudioStream" uid="uid://cvw5mafpv2fuv" path="res://assets/audio/Music/Clement Panchout - Sweet 70s.wav" id="8_ysscr"]
+[ext_resource type="PackedScene" uid="uid://xj3f48apa15s" path="res://scenes/entities/yarn_ball.tscn" id="10_t0us3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_okbnv"]
 bg_color = Color(0, 0, 0, 1)
@@ -37,6 +38,15 @@ tile_map_data = PackedByteArray("AAAHAAsAAAADAAAAAAAHAAwAAAADAAEAAAAHAA0AAAACAAI
 [node name="Foreground" parent="." index="5"]
 tile_map_data = PackedByteArray("AABPAP//AAAFAAQAAABTAP//AAAIAAQAAABSAP//AAAHAAQAAABRAP//AAAGAAQAAABQAP//AAAGAAQAAAA=")
 
+[node name="Player" parent="." index="6"]
+position = Vector2(138.04, 135)
+
+[node name="Spawnpoint" parent="." index="7"]
+position = Vector2(39, 162)
+
+[node name="Paralx_Background" parent="." index="8"]
+layer = -100
+
 [node name="Sky" parent="Paralx_Background" index="0"]
 texture = ExtResource("2_okbnv")
 
@@ -52,35 +62,20 @@ texture = ExtResource("5_m5awn")
 [node name="Foreground" parent="Paralx_Background" index="4"]
 texture = ExtResource("6_tyvce")
 
-[node name="SkeletonCounter" parent="GUI" index="0"]
-offset_left = -92.0
-offset_top = 2.0
-offset_right = -30.0
-offset_bottom = 33.0
-theme_override_font_sizes/font_size = 24
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Lives_counter" parent="GUI" index="1"]
-offset_left = 23.0
-offset_top = 13.0
-offset_right = 52.0
-offset_bottom = 39.0
+[node name="Lives_counter" parent="GUI" index="4"]
+offset_left = 24.0
+offset_top = 15.0
+offset_right = 53.0
+offset_bottom = 41.0
 theme_override_font_sizes/font_size = 20
-text = "9"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ComboCounter" parent="GUI" index="3"]
-offset_left = 9.0
-offset_right = 44.0
-offset_bottom = 62.0
+[node name="ComboCounter" parent="GUI" index="6"]
+offset_right = 37.0
+offset_bottom = 36.0
 
-[node name="ComboTimer" parent="GUI" index="4"]
-offset_left = 9.0
-offset_top = 57.0
-offset_right = 278.99997
-offset_bottom = 75.0
+[node name="ComboTimer" parent="GUI" index="7"]
 theme_override_styles/background = SubResource("StyleBoxFlat_okbnv")
 theme_override_styles/fill = SubResource("StyleBoxFlat_8ob5a")
 
@@ -141,3 +136,262 @@ volume_db = -22.0
 [node name="door" parent="." index="13" instance=ExtResource("8_8ob5a")]
 position = Vector2(2712, -31)
 NEXT_SCENE_PATH = "res://scenes/stages/stage_two.tscn"
+REQUIRED_MONSTER_KILLS = 14
+
+[node name="Collectables" type="Node2D" parent="." index="15"]
+position = Vector2(0, -10)
+
+[node name="YarnBall" parent="Collectables" index="0" instance=ExtResource("10_t0us3")]
+position = Vector2(171, 86)
+
+[node name="YarnBall2" parent="Collectables" index="1" instance=ExtResource("10_t0us3")]
+position = Vector2(231, 85)
+
+[node name="YarnBall3" parent="Collectables" index="2" instance=ExtResource("10_t0us3")]
+position = Vector2(203, 4)
+
+[node name="YarnBall4" parent="Collectables" index="3" instance=ExtResource("10_t0us3")]
+position = Vector2(256, -77)
+
+[node name="YarnBall5" parent="Collectables" index="4" instance=ExtResource("10_t0us3")]
+position = Vector2(292, -78)
+
+[node name="YarnBall6" parent="Collectables" index="5" instance=ExtResource("10_t0us3")]
+position = Vector2(327, -77)
+
+[node name="YarnBall7" parent="Collectables" index="6" instance=ExtResource("10_t0us3")]
+position = Vector2(358, -81)
+
+[node name="YarnBall8" parent="Collectables" index="7" instance=ExtResource("10_t0us3")]
+position = Vector2(401, -76)
+
+[node name="YarnBall9" parent="Collectables" index="8" instance=ExtResource("10_t0us3")]
+position = Vector2(754, 160)
+
+[node name="YarnBall10" parent="Collectables" index="9" instance=ExtResource("10_t0us3")]
+position = Vector2(756, 192)
+
+[node name="YarnBall11" parent="Collectables" index="10" instance=ExtResource("10_t0us3")]
+position = Vector2(755, 229)
+
+[node name="YarnBall12" parent="Collectables" index="11" instance=ExtResource("10_t0us3")]
+position = Vector2(760, 266)
+
+[node name="YarnBall13" parent="Collectables" index="12" instance=ExtResource("10_t0us3")]
+position = Vector2(737, 296)
+
+[node name="YarnBall14" parent="Collectables" index="13" instance=ExtResource("10_t0us3")]
+position = Vector2(1176, 37)
+
+[node name="YarnBall15" parent="Collectables" index="14" instance=ExtResource("10_t0us3")]
+position = Vector2(983, 202)
+
+[node name="YarnBall16" parent="Collectables" index="15" instance=ExtResource("10_t0us3")]
+position = Vector2(1160, 272)
+
+[node name="YarnBall17" parent="Collectables" index="16" instance=ExtResource("10_t0us3")]
+position = Vector2(1470, 244)
+
+[node name="YarnBall18" parent="Collectables" index="17" instance=ExtResource("10_t0us3")]
+position = Vector2(1251, 251)
+
+[node name="YarnBall19" parent="Collectables" index="18" instance=ExtResource("10_t0us3")]
+position = Vector2(1092, 227)
+
+[node name="YarnBall20" parent="Collectables" index="19" instance=ExtResource("10_t0us3")]
+position = Vector2(1385, 222)
+
+[node name="YarnBall21" parent="Collectables" index="20" instance=ExtResource("10_t0us3")]
+position = Vector2(1304, 4)
+
+[node name="YarnBall22" parent="Collectables" index="21" instance=ExtResource("10_t0us3")]
+position = Vector2(1128, -31)
+
+[node name="YarnBall23" parent="Collectables" index="22" instance=ExtResource("10_t0us3")]
+position = Vector2(1037, -99)
+
+[node name="YarnBall24" parent="Collectables" index="23" instance=ExtResource("10_t0us3")]
+position = Vector2(1301, -116)
+
+[node name="YarnBall25" parent="Collectables" index="24" instance=ExtResource("10_t0us3")]
+position = Vector2(1302, -150)
+
+[node name="YarnBall26" parent="Collectables" index="25" instance=ExtResource("10_t0us3")]
+position = Vector2(1299, -180)
+
+[node name="YarnBall27" parent="Collectables" index="26" instance=ExtResource("10_t0us3")]
+position = Vector2(1303, -221)
+
+[node name="YarnBall28" parent="Collectables" index="27" instance=ExtResource("10_t0us3")]
+position = Vector2(1303, -221)
+
+[node name="YarnBall29" parent="Collectables" index="28" instance=ExtResource("10_t0us3")]
+position = Vector2(1294, -253)
+
+[node name="YarnBall30" parent="Collectables" index="29" instance=ExtResource("10_t0us3")]
+position = Vector2(1300, -292)
+
+[node name="YarnBall31" parent="Collectables" index="30" instance=ExtResource("10_t0us3")]
+position = Vector2(1482, -181)
+
+[node name="YarnBall32" parent="Collectables" index="31" instance=ExtResource("10_t0us3")]
+position = Vector2(1482, -213)
+
+[node name="YarnBall33" parent="Collectables" index="32" instance=ExtResource("10_t0us3")]
+position = Vector2(1482, -249)
+
+[node name="YarnBall34" parent="Collectables" index="33" instance=ExtResource("10_t0us3")]
+position = Vector2(1482, -291)
+
+[node name="YarnBall35" parent="Collectables" index="34" instance=ExtResource("10_t0us3")]
+position = Vector2(1482, -291)
+
+[node name="YarnBall36" parent="Collectables" index="35" instance=ExtResource("10_t0us3")]
+position = Vector2(1562, 60)
+
+[node name="YarnBall37" parent="Collectables" index="36" instance=ExtResource("10_t0us3")]
+position = Vector2(1744, -45)
+
+[node name="YarnBall38" parent="Collectables" index="37" instance=ExtResource("10_t0us3")]
+position = Vector2(1752, -86)
+
+[node name="YarnBall39" parent="Collectables" index="38" instance=ExtResource("10_t0us3")]
+position = Vector2(1759, -134)
+
+[node name="YarnBall40" parent="Collectables" index="39" instance=ExtResource("10_t0us3")]
+position = Vector2(1783, -195)
+
+[node name="YarnBall41" parent="Collectables" index="40" instance=ExtResource("10_t0us3")]
+position = Vector2(1811, -155)
+
+[node name="YarnBall42" parent="Collectables" index="41" instance=ExtResource("10_t0us3")]
+position = Vector2(1884, -206)
+
+[node name="YarnBall43" parent="Collectables" index="42" instance=ExtResource("10_t0us3")]
+position = Vector2(1988, -271)
+
+[node name="YarnBall44" parent="Collectables" index="43" instance=ExtResource("10_t0us3")]
+position = Vector2(2117, -271)
+
+[node name="YarnBall45" parent="Collectables" index="44" instance=ExtResource("10_t0us3")]
+position = Vector2(2239, -264)
+
+[node name="YarnBall46" parent="Collectables" index="45" instance=ExtResource("10_t0us3")]
+position = Vector2(2236, 111)
+
+[node name="YarnBall47" parent="Collectables" index="46" instance=ExtResource("10_t0us3")]
+position = Vector2(2064, 178)
+
+[node name="YarnBall48" parent="Collectables" index="47" instance=ExtResource("10_t0us3")]
+position = Vector2(1896, 180)
+
+[node name="YarnBall49" parent="Collectables" index="48" instance=ExtResource("10_t0us3")]
+position = Vector2(1561, 137)
+
+[node name="YarnBall78" parent="Collectables" index="49" instance=ExtResource("10_t0us3")]
+position = Vector2(1712, 154)
+
+[node name="YarnBall79" parent="Collectables" index="50" instance=ExtResource("10_t0us3")]
+position = Vector2(1688, 178)
+
+[node name="YarnBall80" parent="Collectables" index="51" instance=ExtResource("10_t0us3")]
+position = Vector2(1712, 202)
+
+[node name="YarnBall83" parent="Collectables" index="52" instance=ExtResource("10_t0us3")]
+position = Vector2(2176, 202)
+
+[node name="YarnBall84" parent="Collectables" index="53" instance=ExtResource("10_t0us3")]
+position = Vector2(2176, 242)
+
+[node name="YarnBall85" parent="Collectables" index="54" instance=ExtResource("10_t0us3")]
+position = Vector2(2176, 285)
+
+[node name="YarnBall81" parent="Collectables" index="55" instance=ExtResource("10_t0us3")]
+position = Vector2(1728, 178)
+
+[node name="YarnBall82" parent="Collectables" index="56" instance=ExtResource("10_t0us3")]
+position = Vector2(1792, 10)
+
+[node name="YarnBall50" parent="Collectables" index="57" instance=ExtResource("10_t0us3")]
+position = Vector2(2640, -6)
+
+[node name="YarnBall51" parent="Collectables" index="58" instance=ExtResource("10_t0us3")]
+position = Vector2(2608, -6)
+
+[node name="YarnBall52" parent="Collectables" index="59" instance=ExtResource("10_t0us3")]
+position = Vector2(2576, -6)
+
+[node name="YarnBall53" parent="Collectables" index="60" instance=ExtResource("10_t0us3")]
+position = Vector2(2544, -14)
+
+[node name="YarnBall54" parent="Collectables" index="61" instance=ExtResource("10_t0us3")]
+position = Vector2(2504, -78)
+
+[node name="YarnBall55" parent="Collectables" index="62" instance=ExtResource("10_t0us3")]
+position = Vector2(2504, -110)
+
+[node name="YarnBall56" parent="Collectables" index="63" instance=ExtResource("10_t0us3")]
+position = Vector2(2488, -142)
+
+[node name="YarnBall57" parent="Collectables" index="64" instance=ExtResource("10_t0us3")]
+position = Vector2(2440, -158)
+
+[node name="YarnBall58" parent="Collectables" index="65" instance=ExtResource("10_t0us3")]
+position = Vector2(2368, -158)
+
+[node name="YarnBall59" parent="Collectables" index="66" instance=ExtResource("10_t0us3")]
+position = Vector2(2304, -150)
+
+[node name="YarnBall60" parent="Collectables" index="67" instance=ExtResource("10_t0us3")]
+position = Vector2(2256, -126)
+
+[node name="YarnBall61" parent="Collectables" index="68" instance=ExtResource("10_t0us3")]
+position = Vector2(2208, -102)
+
+[node name="YarnBall62" parent="Collectables" index="69" instance=ExtResource("10_t0us3")]
+position = Vector2(2168, -94)
+
+[node name="YarnBall63" parent="Collectables" index="70" instance=ExtResource("10_t0us3")]
+position = Vector2(2168, -94)
+
+[node name="YarnBall64" parent="Collectables" index="71" instance=ExtResource("10_t0us3")]
+position = Vector2(2088, -70)
+
+[node name="YarnBall65" parent="Collectables" index="72" instance=ExtResource("10_t0us3")]
+position = Vector2(2040, -30)
+
+[node name="YarnBall66" parent="Collectables" index="73" instance=ExtResource("10_t0us3")]
+position = Vector2(1944, -46)
+
+[node name="YarnBall67" parent="Collectables" index="74" instance=ExtResource("10_t0us3")]
+position = Vector2(1896, 2)
+
+[node name="YarnBall68" parent="Collectables" index="75" instance=ExtResource("10_t0us3")]
+position = Vector2(2392, 82)
+
+[node name="YarnBall69" parent="Collectables" index="76" instance=ExtResource("10_t0us3")]
+position = Vector2(2304, 66)
+
+[node name="YarnBall70" parent="Collectables" index="77" instance=ExtResource("10_t0us3")]
+position = Vector2(304, 138)
+
+[node name="YarnBall71" parent="Collectables" index="78" instance=ExtResource("10_t0us3")]
+position = Vector2(376, 106)
+
+[node name="YarnBall72" parent="Collectables" index="79" instance=ExtResource("10_t0us3")]
+position = Vector2(472, 98)
+
+[node name="YarnBall73" parent="Collectables" index="80" instance=ExtResource("10_t0us3")]
+position = Vector2(576, 98)
+
+[node name="YarnBall74" parent="Collectables" index="81" instance=ExtResource("10_t0us3")]
+position = Vector2(896, -78)
+
+[node name="YarnBall77" parent="Collectables" index="82" instance=ExtResource("10_t0us3")]
+position = Vector2(840, 18)
+
+[node name="YarnBall75" parent="Collectables" index="83" instance=ExtResource("10_t0us3")]
+position = Vector2(632, 18)
+
+[node name="YarnBall76" parent="Collectables" index="84" instance=ExtResource("10_t0us3")]
+position = Vector2(632, 18)

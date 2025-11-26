@@ -1,7 +1,7 @@
 [gd_scene load_steps=204 format=3 uid="uid://mcs3gat6hnxr"]
 
 [ext_resource type="Texture2D" uid="uid://dhhllnr7it1r7" path="res://assets/sprites/CatCharacterAnimations1.1/SpriteSheets/AlternativeColour/Outlined_15_Alternative_Colour_Cat_Attack-Sheet.png" id="1_dx0e4"]
-[ext_resource type="Script" uid="uid://c8gq7knyacdkc" path="res://player.gd" id="1_jm5j8"]
+[ext_resource type="Script" uid="uid://c8gq7knyacdkc" path="res://scripts/player.gd" id="1_jm5j8"]
 [ext_resource type="Texture2D" uid="uid://bnq4xxasds03f" path="res://assets/sprites/CatCharacterAnimations1.1/SpriteSheets/AlternativeColour/Outlined_23_Alternative_Colour_Cat_Attack_2_Hits-Sheet.png" id="2_jm5j8"]
 [ext_resource type="Texture2D" uid="uid://des4kxrjpsk0i" path="res://assets/sprites/CatCharacterAnimations1.1/SpriteSheets/AlternativeColour/Outlined_9_Alternative_Colour_Cat_Climb_Ladder-Sheet.png" id="3_7hik5"]
 [ext_resource type="Texture2D" uid="uid://dv651rrkhry17" path="res://assets/sprites/CatCharacterAnimations1.1/SpriteSheets/AlternativeColour/Outlined_6_Alternative_Colour_Cat_Dash-Sheet.png" id="4_qtqh7"]
@@ -25,11 +25,11 @@
 [ext_resource type="Texture2D" uid="uid://dubxn3y7ca8so" path="res://assets/sprites/CatCharacterAnimations1.1/SpriteSheets/AlternativeColour/Outlined_12_Alternative_Colour_Cat_Spin-Sheet.png" id="22_1xqrm"]
 [ext_resource type="Texture2D" uid="uid://dtcbtc2rscd1b" path="res://assets/sprites/CatCharacterAnimations1.1/SpriteSheets/AlternativeColour/Outlined_17_Alternative_Colour_Cat_Take_Damage-Sheet.png" id="23_bfour"]
 [ext_resource type="Texture2D" uid="uid://chdu75h0gia2" path="res://assets/sprites/CatCharacterAnimations1.1/SpriteSheets/AlternativeColour/Outlined_5_Alternative_Colour_Cat_Wall_Slide-Sheet.png" id="24_8gr2b"]
-[ext_resource type="AudioStream" uid="uid://n2rwx1ljtjv" path="res://assets/audio/jump.wav" id="26_iruf7"]
-[ext_resource type="AudioStream" uid="uid://bi7epv5j0srch" path="res://assets/audio/attack.wav" id="27_j5n4i"]
-[ext_resource type="AudioStream" uid="uid://0xgyj22ln12j" path="res://assets/audio/dash.wav" id="28_634y6"]
-[ext_resource type="AudioStream" uid="uid://rod4ugh1aekh" path="res://assets/audio/hurt.wav" id="29_efrwb"]
-[ext_resource type="AudioStream" uid="uid://52eyyvlgxbt6" path="res://assets/audio/death.wav" id="30_j5n4i"]
+[ext_resource type="AudioStream" uid="uid://n2rwx1ljtjv" path="res://assets/audio/SFX/player/jump.wav" id="26_iruf7"]
+[ext_resource type="AudioStream" uid="uid://bi7epv5j0srch" path="res://assets/audio/SFX/player/attack.wav" id="27_j5n4i"]
+[ext_resource type="AudioStream" uid="uid://0xgyj22ln12j" path="res://assets/audio/SFX/player/dash.wav" id="28_634y6"]
+[ext_resource type="AudioStream" uid="uid://rod4ugh1aekh" path="res://assets/audio/SFX/player/hurt.wav" id="29_efrwb"]
+[ext_resource type="AudioStream" uid="uid://52eyyvlgxbt6" path="res://assets/audio/SFX/player/death.wav" id="30_j5n4i"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vl8ci"]
 atlas = ExtResource("1_dx0e4")
