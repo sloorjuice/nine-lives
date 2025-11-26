@@ -130,6 +130,7 @@ func _on_slot_pressed(slot: int):
 	
 	# 2. SET SLOT IMMEDIATELY
 	GameManager.set_slot(slot)
+	GameManager.restore_progress_from_save() # <-- Add this line
 	
 	# 3. Verify it was set
 	await get_tree().process_frame

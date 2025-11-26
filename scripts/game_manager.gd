@@ -11,8 +11,15 @@ var current_yarn := 0
 var current_bones := 0
 var current_monster_bits := 0
 var current_slot := 0
+var current_stage_index := 0
 var main_menu_scene_path: String = "res://scenes/menus/main_menu.tscn"
-
+var shop_scene_path: String = "res://scenes/cat_cafe_shop.tscn"
+var stages = [
+	"res://scenes/stages/stage_one.tscn", 
+	"res://scenes/stages/stage_two.tscn", 
+	"res://scenes/stages/stage_three.tscn", 
+	"res://scenes/stages/stage_five.tscn"
+]
 
 
 func _ready():
@@ -115,3 +122,22 @@ func _can_save_current_scene() -> bool:
 func _notification(what):
 	if what == NOTIFICATION_CRASH: # Rarely called; fallback: use global script error print
 		print("[GameManager] NOTIFICATION_CRASH")
+
+func get_next_stage_path() -> String:
+	if current_stage_index + 1 < stages.size():
+		return stages[current_stage_index + 1]
+	return ""
+
+func advance_stage():
+	if current_stage_index + 1 < stages.size():
+		current_stage_index += 1
+
+func save_progress():
+	if current_slot > 0:
+		SaveManager.save(current_slot, get_tree().current_scene.scene_file_path, get_lives(), current_stage_index)
+
+func restore_progress_from_save():
+	if current_slot > 0:
+		var save = SaveManager.load(current_slot)
+		if save.has("stage_index"):
+			current_stage_index = int(save["stage_index"])

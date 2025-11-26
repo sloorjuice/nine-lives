@@ -36,7 +36,7 @@ func _save_all_data(data: Dictionary) -> void:
 	file.close()
 
 # Save data format: { "stage": String, "lives": int }
-func save(slot: int, stage: String, lives: int) -> void:
+func save(slot: int, stage: String, lives: int, stage_index: int = 0) -> void:
 	if slot < 1 or slot > 3:
 		push_error("[SaveManager] Reject save: invalid slot " + str(slot))
 		return
@@ -48,6 +48,7 @@ func save(slot: int, stage: String, lives: int) -> void:
 	all_data[slot] = {
 		"stage": stage, 
 		"lives": lives, 
+		"stage_index": stage_index,
 		"yarn_count": yarn_count,
 		"bones_count": bones_count,
 		"monster_bits_count": monster_bits_count

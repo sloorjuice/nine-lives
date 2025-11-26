@@ -165,7 +165,7 @@ func _finish_cinematic(player_node: Node = null):
 func _on_body_entered(body: Node2D):
 	if body.is_in_group("player"):
 		player_can_interact = true
-		print("DOOR: Player entered interaction zone. Press UP to exit.")
+		print("DOOR: Player entered interaction zone. Press UP to	 exit.")
 
 func _on_body_exited(body: Node2D):
 	if body.is_in_group("player"):
@@ -173,18 +173,29 @@ func _on_body_exited(body: Node2D):
 		print("DOOR: Player exited interaction zone.")
 
 func go_to_next_level():
-	print("DOOR: Changing scene to %s" % NEXT_SCENE_PATH)
-	# Persist yarn only on level completion
+	print("DOOR: Changing scene to shop")
 	var gm = get_node("/root/GameManager")
 	var slot = gm.current_slot
-	var session_amount = gm.get_current_yarn()
-	if slot > 0 and session_amount > 0:
-		var committed = SaveManager.add_yarn(slot, session_amount)
-		print("[Door] Committed current yarn=%d -> slot total=%d" % [session_amount, committed])
+
+	# Persist yarn
+	var session_yarn = gm.get_current_yarn()
+	if slot > 0 and session_yarn > 0:
+		SaveManager.add_yarn(slot, session_yarn)
 		gm.reset_current_yarn()
-	
-	# Save progress before changing scenes (stage path + lives)
-	var stage = get_tree().current_scene
-	if stage.has_method("save_current_progress"):
-		stage.save_current_progress()
-	get_tree().change_scene_to_file(NEXT_SCENE_PATH)
+
+	# Persist bones
+	var session_bones = gm.get_current_bones()
+	if slot > 0 and session_bones > 0:
+		SaveManager.add_bones(slot, session_bones)
+		gm.reset_current_bones()
+
+	# Persist monster bits
+	var session_bits = gm.get_current_monster_bits()
+	if slot > 0 and session_bits > 0:
+		SaveManager.add_monster_bits(slot, session_bits)
+		gm.reset_current_monster_bits()
+
+	# --- FIX: Advance the stage index ---
+	gm.advance_stage()
+
+	get_tree().change_scene_to_file(gm.shop_scene_path)

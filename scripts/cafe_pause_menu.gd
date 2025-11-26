@@ -32,5 +32,14 @@ func on_restart_up() -> void:
 	get_tree().reload_current_scene()
 
 func on_return_up() -> void:
+	# Save before returning to menu
+	var stage = get_parent()
+	if game_manager.current_slot > 0:
+		SaveManager.save(
+			game_manager.current_slot,
+			get_tree().current_scene.scene_file_path,
+			game_manager.get_lives(),
+			game_manager.current_stage_index
+	 )
 	get_tree().paused = false
 	get_tree().change_scene_to_file(game_manager.main_menu_scene_path)
