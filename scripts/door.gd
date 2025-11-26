@@ -6,6 +6,7 @@ extends Area2D
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 @export var NEXT_SCENE_PATH = "res://scenes/thanks_for_playing.tscn"
+@export var REQUIRED_MONSTER_KILLS = 10
 
 var is_locked: bool = true
 var player_can_interact: bool = false
@@ -13,10 +14,16 @@ var player_can_interact: bool = false
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	audio_stream_player_2d.process_mode = Node.PROCESS_MODE_ALWAYS
+	add_to_group("exit_door")
+	
+	# Wait for all nodes to be ready before connecting
+	await get_tree().process_frame
 	
 	var counter_node = get_tree().get_first_node_in_group("enemy_counter")
 	if counter_node:
 		counter_node.connect("all_enemies_dead", Callable(self, "_on_all_enemies_dead"))
+	else:
+		print("DOOR WARNING: Could not find enemy_counter!")
 	
 	body_entered.connect(Callable(self, "_on_body_entered"))
 	body_exited.connect(Callable(self, "_on_body_exited"))

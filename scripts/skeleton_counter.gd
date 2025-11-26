@@ -6,6 +6,8 @@ signal all_enemies_dead
 @onready var label: Label = $SkeletonCounter
 
 var total_initial := 0
+var min_monster_kills := 0
+var monsters_killed := 0
 const ENEMY_GROUP = "enemies"
 var scene_queued = false # Prevent running the signal/scene change multiple times
 
@@ -17,6 +19,13 @@ func _ready():
 	await get_tree().process_frame
 	total_initial = get_tree().get_nodes_in_group(ENEMY_GROUP).size()
 	
+	# Get the required monster kills from the door
+	var door_node = get_tree().get_first_node_in_group("exit_door")
+	if door_node:
+		min_monster_kills = door_node.REQUIRED_MONSTER_KILLS
+	else:
+		min_monster_kills = total_initial # Default fallback
+	
 	# If there are enemies, start displaying the count
 	if total_initial > 0:
 		update_label()
@@ -26,14 +35,19 @@ func _process(delta):
 	# Using _process for this is fine for simple enemy counting.
 	update_label()
 
+func _on_enemy_died():
+	monsters_killed += 1
+
 func update_label():
 	var alive_count = get_tree().get_nodes_in_group(ENEMY_GROUP).size()
+	monsters_killed = total_initial - alive_count
 	
-	# Only update the label if the count is still changing
-	label.text = "%d/%d" % [alive_count, total_initial]
+	# Display remaining kills needed
+	var remaining = max(0, min_monster_kills - monsters_killed)
+	label.text = "%d/%d" % [remaining, min_monster_kills]
 
 	# Check for completion
-	if alive_count <= 0 and total_initial > 0 and not scene_queued:
+	if monsters_killed >= min_monster_kills and not scene_queued:
 		# --- START CINEMATIC: PAUSE THE GAME ---
 		get_tree().paused = true 
 		

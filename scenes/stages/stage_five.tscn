@@ -519,6 +519,7 @@ tile_set = SubResource("TileSet_mh81h")
 [node name="door" parent="." index="4" instance=ExtResource("5_u3aqr")]
 position = Vector2(1284, -943)
 NEXT_SCENE_PATH = "res://scenes/menus/thanks_for_playing.tscn"
+REQUIRED_MONSTER_KILLS = 18
 
 [node name="Enemies" type="Node2D" parent="." index="5"]
 
