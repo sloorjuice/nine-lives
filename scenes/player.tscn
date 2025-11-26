@@ -1343,6 +1343,7 @@ size = Vector2(32, 34)
 size = Vector2(961, 646)
 
 [node name="Player" type="CharacterBody2D"]
+z_index = 30
 collision_mask = 254
 script = ExtResource("1_jm5j8")
 death_threshold = 450.0
@@ -1351,9 +1352,8 @@ death_threshold = 450.0
 texture_filter = 1
 texture_repeat = 1
 sprite_frames = SubResource("SpriteFrames_3f83b")
-animation = &"death"
-frame = 8
-frame_progress = 1.0
+animation = &"idle"
+frame_progress = 0.377357
 
 [node name="TopHitBox" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_adwsw")

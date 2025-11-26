@@ -422,6 +422,7 @@ size = Vector2(9, 16)
 radius = 155.00322
 
 [node name="skeleton" type="CharacterBody2D"]
+z_index = 25
 collision_layer = 4
 collision_mask = 39
 script = ExtResource("1_d56fl")

@@ -2074,7 +2074,6 @@ bus = &"Music"
 layer = 10
 
 [node name="EnemySenses" type="ColorRect" parent="EdgeIndicators"]
-visible = false
 material = SubResource("ShaderMaterial_u7iro")
 anchors_preset = 15
 anchor_right = 1.0

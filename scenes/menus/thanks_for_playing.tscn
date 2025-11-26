@@ -1,14 +1,16 @@
-[gd_scene load_steps=8 format=3 uid="uid://bpyt0u3hnhoi1"]
+[gd_scene load_steps=9 format=3 uid="uid://bpyt0u3hnhoi1"]
 
 [ext_resource type="FontFile" uid="uid://baejtw4fvb0a4" path="res://assets/PixelatedEleganceRegular-ovyAA.ttf" id="1_cfell"]
-[ext_resource type="Texture2D" uid="uid://c1ned2u2glfti" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/1/Day/1.png" id="1_na8tq"]
-[ext_resource type="Texture2D" uid="uid://c2neg042snt4i" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/1/Day/2.png" id="2_ysrj2"]
-[ext_resource type="Texture2D" uid="uid://cmi3hpg1xdpo3" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/1/Day/3.png" id="3_51qlj"]
-[ext_resource type="Texture2D" uid="uid://dohapytbfvi1h" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/1/Day/4.png" id="4_t7a3d"]
-[ext_resource type="Texture2D" uid="uid://cwmfrnv5oc82c" path="res://assets/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/1/Day/5.png" id="5_i5lih"]
-[ext_resource type="AudioStream" uid="uid://bqw5r7mascbqc" path="res://assets/audio/2016_ Clement Panchout_ Life is full of Joy.wav" id="7_na8tq"]
+[ext_resource type="Texture2D" uid="uid://c1ned2u2glfti" path="res://assets/sprites/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/1/Day/1.png" id="1_na8tq"]
+[ext_resource type="Script" uid="uid://oxb1jchtwr5u" path="res://scripts/thanks_for_playing.gd" id="1_oeitw"]
+[ext_resource type="Texture2D" uid="uid://c2neg042snt4i" path="res://assets/sprites/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/1/Day/2.png" id="2_ysrj2"]
+[ext_resource type="Texture2D" uid="uid://cmi3hpg1xdpo3" path="res://assets/sprites/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/1/Day/3.png" id="3_51qlj"]
+[ext_resource type="Texture2D" uid="uid://dohapytbfvi1h" path="res://assets/sprites/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/1/Day/4.png" id="4_t7a3d"]
+[ext_resource type="Texture2D" uid="uid://cwmfrnv5oc82c" path="res://assets/sprites/free-scrolling-city-backgrounds-pixel-art/1 Backgrounds/1/Day/5.png" id="5_i5lih"]
+[ext_resource type="AudioStream" uid="uid://bqw5r7mascbqc" path="res://assets/audio/Music/2016_ Clement Panchout_ Life is full of Joy.wav" id="7_na8tq"]
 
 [node name="Thanks_For_Playing" type="Node2D"]
+script = ExtResource("1_oeitw")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
