@@ -105,7 +105,7 @@ func _refresh_slots():
 				slot_delete_buttons[i].visible = true # Show delete for corrupted saves
 			else:
 				var stage_name = stage_path.get_file().get_basename()
-				slot_labels[i].text = "%d | Stage: %s" % [int(lives_val), stage_name]
+				slot_labels[i].text = "%d | %s" % [int(lives_val), stage_name]
 				slot_icons[i].visible = true
 				slot_buttons[i].text = "Continue"
 		else:
