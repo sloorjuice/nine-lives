@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://ce16s1keugo1w"
+path="res://.godot/imported/Clement Panchout _ Fluttering in the Sun _ (The GodMOTHer).wav-96400e388c83630e9e6a722636d958bf.sample"
+
+[deps]
+
+source_file="res://assets/audio/Music/Clement Panchout _ Fluttering in the Sun _ (The GodMOTHer).wav"
+dest_files=["res://.godot/imported/Clement Panchout _ Fluttering in the Sun _ (The GodMOTHer).wav-96400e388c83630e9e6a722636d958bf.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=2
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

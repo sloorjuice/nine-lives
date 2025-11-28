@@ -35,26 +35,28 @@ func _save_all_data(data: Dictionary) -> void:
 	file.store_var(data)
 	file.close()
 
-# Save data format: { "stage": String, "lives": int }
+# Save data format: { "stage": String, "lives": int, "stage_index": int }
 func save(slot: int, stage: String, lives: int, stage_index: int = 0) -> void:
 	if slot < 1 or slot > 3:
-		push_error("[SaveManager] Reject save: invalid slot " + str(slot))
 		return
 	var all_data = _load_all_data()
 	var slot_data: Dictionary = all_data.get(slot, {})
 	var yarn_count: int = slot_data.get("yarn_count", 0) 
 	var bones_count: int = slot_data.get("bones_count", 0)
 	var monster_bits_count: int = slot_data.get("monster_bits_count", 0)
+	
+	# Complete the save data
 	all_data[slot] = {
-		"stage": stage, 
-		"lives": lives, 
+		"stage": stage,
+		"lives": lives,
 		"stage_index": stage_index,
 		"yarn_count": yarn_count,
 		"bones_count": bones_count,
 		"monster_bits_count": monster_bits_count
 	}
+	
 	_save_all_data(all_data)
-	print("[SaveManager] Saved slot %d -> %s | lives=%d | yarn=%d | bones=%d | bits=%d" % [slot, stage, lives, yarn_count, bones_count, monster_bits_count])
+	print("[SaveManager] Saved slot %d -> %s | lives=%d | stage_index=%d | yarn=%d | bones=%d | bits=%d" % [slot, stage, lives, stage_index, yarn_count, bones_count, monster_bits_count])
 
 func get_yarn_count(slot: int) -> int:
 	var all_data = _load_all_data()
@@ -174,7 +176,7 @@ func delete(slot: int) -> void:
 		_save_all_data(all_data)
 		print("[SaveManager] Deleted slot %d" % slot)
 	else:
-		print("[SaveManager] delete: slot %d empty, nothing to delete" % slot)
+		print("[SaveManager] No data to delete for slot %d" % slot)
 
 func has_save(slot: int) -> bool:
 	var all_data = _load_all_data()

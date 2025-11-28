@@ -181,21 +181,24 @@ func go_to_next_level():
 	var session_yarn = gm.get_current_yarn()
 	if slot > 0 and session_yarn > 0:
 		SaveManager.add_yarn(slot, session_yarn)
-		gm.reset_current_yarn()
 
 	# Persist bones
 	var session_bones = gm.get_current_bones()
 	if slot > 0 and session_bones > 0:
 		SaveManager.add_bones(slot, session_bones)
-		gm.reset_current_bones()
 
 	# Persist monster bits
 	var session_bits = gm.get_current_monster_bits()
 	if slot > 0 and session_bits > 0:
 		SaveManager.add_monster_bits(slot, session_bits)
-		gm.reset_current_monster_bits()
 
-	# --- FIX: Advance the stage index ---
+	# --- FIX: Advance the stage index AND SAVE IT ---
 	gm.advance_stage()
+	
+	# NEW: Save the updated stage index immediately
+	if slot > 0:
+		var current_scene_path = get_tree().current_scene.scene_file_path
+		SaveManager.save(slot, current_scene_path, gm.get_lives(), gm.current_stage_index)
+		print("DOOR: Saved updated stage index: ", gm.current_stage_index)
 
 	get_tree().change_scene_to_file(gm.shop_scene_path)
